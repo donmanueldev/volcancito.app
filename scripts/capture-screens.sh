@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Captures the current screen of a connected Android device into src/assets/screens/<name>.png,
-# cropping the status and navigation bars. Navigate the app to the screen first.
+# Captures the current screen of a connected Android device into src/assets/screens/<name>.png
+# at 720px wide, status and navigation bars included. Navigate the app to the screen first.
 # Usage: scripts/capture-screens.sh <name> [more names, one capture per Enter]
 set -euo pipefail
 
@@ -11,11 +11,7 @@ for name in "$@"; do
   read -r -p "Open the '$name' screen on the device and press Enter… "
   tmp="$(mktemp -t volcancito-shot).png"
   adb exec-out screencap -p > "$tmp"
-  height=$(magick identify -format '%h' "$tmp")
-  width=$(magick identify -format '%w' "$tmp")
-  top=$((height * 55 / 1000))
-  bottom=$((height * 945 / 1000))
-  magick "$tmp" -crop "${width}x$((bottom - top))+0+${top}" +repage -resize 720x "$out_dir/$name.png"
+  magick "$tmp" -resize 720x "$out_dir/$name.png"
   rm -f "$tmp"
   echo "Saved $out_dir/$name.png"
 done

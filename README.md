@@ -21,7 +21,7 @@ The app repo is the source of truth for the look and the content. `scripts/sync-
 
 - `src/theme.ts` → `tokens.css` (Tailwind `@theme` colors, module colors, radius, border)
 - `src/content/data/art.json` + the `PALETTE` in `src/components/drawing.tsx` → SVG illustrations
-- `legal.json`, `nicaragua.json`, `stickers.json`, module names and art names
+- `legal.json` (privacy and terms) and `vowels.json` (the words behind the vowel keyboard)
 
 Run `pnpm sync` after changing any of those in the app, and commit the result. Never edit
 `src/generated/` by hand.

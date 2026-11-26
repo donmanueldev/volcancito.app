@@ -21,23 +21,43 @@ const vowelKeys = [
 
 const screenById = Object.fromEntries(screens.map((screen) => [screen.id, screen]));
 const stages = [
-  { name: 'Escuchar', clause: 'Primero, escucha la letra', screen: screenById.vowels },
-  { name: 'Responder', clause: 'Luego, responde la ronda', screen: screenById.play },
-  { name: 'Trazar', clause: 'Después, traza con el dedo', screen: screenById.trazar },
-  { name: 'Armar', clause: 'Al final, arma la oración', screen: screenById.oraciones },
+  {
+    name: 'Escuchar',
+    clause: 'Primero, escucha la letra',
+    body: 'Cada vocal y cada letra vienen con su dibujo. Se toca «Escuchar» y la app dice la palabra.',
+    screen: screenById.vowels,
+  },
+  {
+    name: 'Responder',
+    clause: 'Luego, responde la ronda',
+    body: 'Rondas cortas de cinco preguntas, como «¿con qué vocal empieza?». Cada acierto da una estrella.',
+    screen: screenById.play,
+  },
+  {
+    name: 'Trazar',
+    clause: 'Después, traza con el dedo',
+    body: 'Se sigue la línea punteada para aprender a escribir las vocales y los números del 1 al 9.',
+    screen: screenById.trazar,
+  },
+  {
+    name: 'Armar',
+    clause: 'Al final, arma la oración',
+    body: 'Se ordenan las palabras para formar oraciones cortas, como «El volcán echa humo».',
+    screen: screenById.oraciones,
+  },
 ];
 
 const features = [
   {
-    phrase: 'Sin anuncios',
-    body: 'Ni anuncios ni enlaces de compra para los niños. Volcancito es gratis, y si algún día cambia, te avisamos antes.',
-    field: 'bg-yellow text-ink',
-    mirror: false,
-  },
-  {
     phrase: 'Sin internet',
     body: 'Los juegos y el progreso se guardan en el teléfono, así que se puede jugar sin conexión.',
     field: 'bg-navy text-white',
+    mirror: false,
+  },
+  {
+    phrase: 'Sin anuncios',
+    body: 'Ni anuncios ni enlaces de compra para los niños. Volcancito es gratis, y si algún día cambia, te avisamos antes.',
+    field: 'bg-yellow text-ink',
     mirror: true,
   },
   {
@@ -179,15 +199,15 @@ const letterTile = 'font-school text-[clamp(3rem,7vw,7rem)] leading-none font-bo
   <section
     id="vocales"
     aria-labelledby="vocales-titulo"
-    class="relative flex flex-col gap-10 overflow-hidden frame py-16 transition-colors duration-300 lg:block lg:min-h-[92svh]"
+    class="grid items-center gap-10 overflow-hidden frame py-20 transition-colors duration-300 lg:min-h-[88svh] lg:grid-cols-12 lg:gap-12 lg:py-24"
     style={`background:${vowelKeys[0].field}`}
     data-vowel-field
   >
-    <div class="relative z-10 max-w-2xl lg:max-w-md" data-reveal>
+    <div class="lg:col-span-4" data-reveal>
       <h2 id="vocales-titulo" class="text-title font-bold">
         Toca una <span data-vowel-heading>a</span>
       </h2>
-      <p class="mt-4 text-body font-medium">
+      <p class="mt-6 max-w-[34ch] text-lead font-medium">
         Así empieza Volcancito: cada letra con su dibujo y su voz. Toca otra vocal, o la misma otra
         vez para cambiar de palabra.
       </p>
@@ -197,43 +217,57 @@ const letterTile = 'font-school text-[clamp(3rem,7vw,7rem)] leading-none font-bo
       data-ui
       data-reveal
       style="--reveal-order:1"
-      class="relative w-full rounded-app-lg bg-white p-5 ink-border lg:absolute lg:right-margin lg:bottom-[8svh] lg:w-[min(56vw,44rem)] lg:p-8"
+      class="w-full rounded-app-lg bg-white p-5 ink-border sm:p-8 lg:col-span-8 lg:p-10"
     >
-      <div class="flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-10">
+      <div
+        class="grid items-center gap-6 sm:grid-cols-[1fr_auto] sm:gap-10 lg:grid-cols-[minmax(0,1fr)_auto]"
+      >
         <p
-          class="font-school text-[clamp(6rem,14vw,12rem)] leading-[0.85] font-bold text-ink"
+          class="text-center font-school text-[clamp(7rem,15vw,14rem)] leading-[0.85] font-bold text-ink"
           aria-hidden="true"
           data-vowel-glyph
         >
           Aa
         </p>
-        <div class="flex flex-col items-center gap-3">
-          <div class="rounded-app-md bg-sand p-3">
+        <div class="flex flex-col items-center gap-4">
+          <div class="rounded-app-md bg-sand p-4">
             {
               vowelKeys.map(({ letter }) =>
                 vowels[letter].map((entry, i) => (
                   <div data-vowel-art={`${letter}-${i}`} hidden={!(letter === 'a' && i === 0)}>
-                    <Art id={entry.art} size={168} class="h-auto w-[clamp(7rem,14vw,10.5rem)]" />
+                    <Art id={entry.art} size={200} class="h-auto w-[clamp(8rem,15vw,13rem)]" />
                   </div>
                 )),
               )
             }
           </div>
-          <p
-            class="font-school text-[clamp(2.25rem,4vw,3.25rem)] leading-none font-bold"
-            aria-live="polite"
-            data-vowel-word
-          >
-            {capitalize(vowels.a[0]?.word ?? '')}
-          </p>
+          <div class="flex items-center gap-3">
+            <p
+              class="font-school text-[clamp(2.5rem,4.5vw,3.75rem)] leading-none font-bold"
+              aria-live="polite"
+              data-vowel-word
+            >
+              {capitalize(vowels.a[0]?.word ?? '')}
+            </p>
+            <button
+              type="button"
+              class="flex size-12 shrink-0 cursor-pointer items-center justify-center rounded-full bg-ink text-white transition-transform hover:scale-105 active:scale-95"
+              aria-label="Escuchar la palabra"
+              data-vowel-listen
+            >
+              <svg viewBox="0 0 24 24" class="size-5" aria-hidden="true"
+                ><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"></path></svg
+              >
+            </button>
+          </div>
         </div>
       </div>
-      <div class="mt-6 grid grid-cols-5 gap-2 md:gap-3" role="group" aria-label="Vocales">
+      <div class="mt-8 grid grid-cols-5 gap-2 sm:gap-3" role="group" aria-label="Vocales">
         {
           vowelKeys.map(({ letter, field }, i) => (
             <button
               type="button"
-              class="flex min-h-16 cursor-pointer items-center justify-center rounded-app-sm bg-white font-school text-[2rem] font-bold transition-transform duration-100 ink-border hover:-translate-y-0.5 active:translate-y-0.5 aria-pressed:bg-ink aria-pressed:text-white"
+              class="flex min-h-16 cursor-pointer items-center justify-center rounded-app-sm bg-white font-school text-[2rem] font-bold transition-transform duration-100 ink-border hover:-translate-y-0.5 active:translate-y-0.5 aria-pressed:bg-ink aria-pressed:text-white sm:min-h-20 sm:text-[2.5rem]"
               aria-pressed={i === 0 ? 'true' : 'false'}
               data-vowel-key={letter}
               data-field={field}
@@ -251,7 +285,7 @@ const letterTile = 'font-school text-[clamp(3rem,7vw,7rem)] leading-none font-bo
     features.map((feature, i) => (
       <section
         aria-labelledby={`ventaja-${i}`}
-        class={`relative flex min-h-[44svh] flex-col justify-between gap-12 frame py-12 lg:min-h-[72svh] ${feature.field}`}
+        class={`relative flex min-h-[44svh] flex-col justify-between gap-12 frame py-12 lg:min-h-[56svh] ${feature.field}`}
       >
         <p
           class:list={[
@@ -277,47 +311,46 @@ const letterTile = 'font-school text-[clamp(3rem,7vw,7rem)] leading-none font-bo
   <section
     id="como"
     aria-labelledby="como-titulo"
-    class="grid md:min-h-[88svh] md:grid-cols-2"
-    data-stages={JSON.stringify(
-      stages.map((stage) => ({ name: stage.name, clause: stage.clause })),
-    )}
+    class="grid lg:min-h-[88svh] lg:grid-cols-2"
+    data-stages
   >
-    <div class="order-2 flex flex-col justify-between gap-10 paper-dots frame py-12 md:order-1">
-      <h2 id="como-titulo" class="text-title font-bold" aria-live="polite" data-stage-clause>
-        {stages[0]?.clause}
-      </h2>
-      <div data-ui class="flex flex-col gap-4">
-        <label for="etapa" class="text-body font-semibold">Mueve para ver una partida</label>
-        <input
-          id="etapa"
-          type="range"
-          min="0"
-          max={stages.length - 1}
-          step="1"
-          value="0"
-          class="stage-range w-full cursor-pointer"
-          aria-valuetext={stages[0]?.name}
-          data-stage-range
-        />
-        <ol class="grid grid-cols-2 gap-2 text-body font-medium xl:grid-cols-4">
-          {
-            stages.map((stage, i) => (
-              <li class:list={['transition-opacity', i > 0 && 'opacity-60']} data-stage-name={i}>
-                {stage.name}
-              </li>
-            ))
-          }
-        </ol>
+    <div
+      class="order-2 flex flex-col justify-center gap-10 paper-dots frame py-16 lg:order-1 lg:py-20"
+    >
+      <h2 id="como-titulo" class="text-title font-bold">Así se juega una partida</h2>
+      <div
+        data-ui
+        class="flex max-w-2xl flex-col gap-2"
+        role="group"
+        aria-label="Pasos de una partida"
+      >
+        {
+          stages.map((stage, i) => (
+            <button
+              type="button"
+              class="group flex cursor-pointer flex-col gap-2 border-l-[6px] border-transparent py-3 pl-5 text-left transition-colors hover:border-sand-dark aria-pressed:border-ink"
+              aria-pressed={i === 0 ? 'true' : 'false'}
+              data-stage-name={i}
+            >
+              <span class="text-[1.75rem] leading-tight font-bold opacity-55 transition-opacity group-hover:opacity-80 group-aria-pressed:opacity-100">
+                {stage.clause}
+              </span>
+              <span class="hidden max-w-[42ch] text-lead group-aria-pressed:block">
+                {stage.body}
+              </span>
+            </button>
+          ))
+        }
       </div>
     </div>
-    <div class="order-1 flex items-center justify-center overflow-hidden bg-blue py-12 md:order-2">
-      <div data-ui class="relative w-[min(17rem,62vw)]">
+    <div class="order-1 flex items-center justify-center overflow-hidden bg-blue py-16 lg:order-2">
+      <div data-ui class="relative w-[min(21rem,72vw)]">
         {
           stages.map((stage, i) =>
             stage.screen ? (
               <div
                 class:list={[
-                  'overflow-hidden rounded-[2.25rem] bg-ink p-1.5 transition-opacity duration-200 ink-border',
+                  'rounded-[2.6rem] bg-ink p-2.5 transition-opacity duration-200',
                   i > 0 && 'absolute inset-0 opacity-0',
                 ]}
                 data-stage-screen={i}
@@ -325,9 +358,9 @@ const letterTile = 'font-school text-[clamp(3rem,7vw,7rem)] leading-none font-bo
                 <Image
                   src={stage.screen.src}
                   alt={stage.screen.alt}
-                  widths={[280, 560]}
-                  sizes="17rem"
-                  class="block h-auto w-full rounded-[1.75rem]"
+                  widths={[340, 680]}
+                  sizes="21rem"
+                  class="block h-auto w-full rounded-[2.1rem]"
                 />
               </div>
             ) : null,
@@ -392,7 +425,7 @@ const letterTile = 'font-school text-[clamp(3rem,7vw,7rem)] leading-none font-bo
   </section>
 
   <section id="preguntas" aria-labelledby="preguntas-titulo">
-    <div class="flex min-h-[24svh] items-end bg-teal frame py-10 lg:min-h-[40svh]">
+    <div class="flex min-h-[24svh] items-end bg-teal frame py-10 lg:min-h-[32svh]">
       <h2 id="preguntas-titulo" class="text-display font-bold">Preguntas de papás</h2>
     </div>
     {
@@ -414,40 +447,6 @@ const letterTile = 'font-school text-[clamp(3rem,7vw,7rem)] leading-none font-bo
     }
   </section>
 </BaseLayout>
-
-<style>
-  .stage-range {
-    appearance: none;
-    height: 2.25rem;
-    background: transparent;
-  }
-  .stage-range::-webkit-slider-runnable-track {
-    height: 0.5rem;
-    border-radius: 999px;
-    background: var(--color-ink);
-  }
-  .stage-range::-moz-range-track {
-    height: 0.5rem;
-    border-radius: 999px;
-    background: var(--color-ink);
-  }
-  .stage-range::-webkit-slider-thumb {
-    appearance: none;
-    width: 2.25rem;
-    height: 2.25rem;
-    margin-top: -0.875rem;
-    border: 3px solid var(--color-ink);
-    border-radius: 0.6rem;
-    background: var(--color-yellow);
-  }
-  .stage-range::-moz-range-thumb {
-    width: 2rem;
-    height: 2rem;
-    border: 3px solid var(--color-ink);
-    border-radius: 0.6rem;
-    background: var(--color-yellow);
-  }
-</style>
 
 <script>
   import { initLanding } from '../scripts/landing';

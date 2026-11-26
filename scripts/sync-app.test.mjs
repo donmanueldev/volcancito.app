@@ -1,12 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  collectArtNames,
-  normalizeShape,
-  parsePalette,
-  parseTheme,
-  tokensCss,
-} from './sync-app.mjs';
+import { normalizeShape, parsePalette, parseTheme, tokensCss } from './sync-app.mjs';
 
 const theme = `
 export const colors = {
@@ -71,22 +65,5 @@ describe('normalizeShape', () => {
 
   it('rejects unknown kinds', () => {
     expect(() => normalizeShape(['x', 1])).toThrow('Unknown art shape kind');
-  });
-});
-
-describe('collectArtNames', () => {
-  it('takes the first word, name or singular for each art id', () => {
-    expect(
-      collectArtNames([
-        [{ word: 'ratón', art: 'raton' }],
-        {
-          items: [
-            { name: 'Jaguar', art: 'jaguar' },
-            { word: 'otro', art: 'raton' },
-          ],
-        },
-        [{ singular: 'estrella', art: 'estrella' }],
-      ]),
-    ).toEqual({ raton: 'Ratón', jaguar: 'Jaguar', estrella: 'Estrella' });
   });
 });

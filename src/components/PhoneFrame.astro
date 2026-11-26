@@ -6,23 +6,23 @@ interface Props {
   src: ImageMetadata;
   alt: string;
   caption?: string;
-  tilt?: number;
   eager?: boolean;
+  class?: string;
 }
 
-const { src, alt, caption, tilt = 0, eager = false } = Astro.props;
+const { src, alt, caption, eager = false, class: className } = Astro.props;
 ---
 
-<figure class="flex flex-col items-center gap-3" style={`transform:rotate(${tilt}deg)`}>
-  <div class="w-[min(220px,40vw)] overflow-hidden rounded-[34px] bg-ink p-1.5 ink-border">
+<figure class:list={['flex flex-col items-center gap-4', className]}>
+  <div class="w-full rounded-[2.4rem] bg-ink p-2.5">
     <Image
       src={src}
       alt={alt}
-      widths={[220, 440]}
-      sizes="220px"
-      class="block h-auto w-full rounded-[28px]"
+      widths={[280, 560, 720]}
+      sizes="(min-width: 1024px) 17rem, 70vw"
+      class="block h-auto w-full rounded-[1.9rem]"
       loading={eager ? 'eager' : 'lazy'}
     />
   </div>
-  {caption && <figcaption class="text-center text-sm font-semibold text-ink">{caption}</figcaption>}
+  {caption && <figcaption class="text-center text-body font-semibold">{caption}</figcaption>}
 </figure>

@@ -15,6 +15,10 @@ export default defineConfig({
       name: 'desktop',
       use: { ...devices['Desktop Chrome'], viewport: { width: 1280, height: 800 } },
     },
+    {
+      name: 'tablet',
+      use: { ...devices['Desktop Chrome'], viewport: { width: 768, height: 1024 } },
+    },
     { name: 'mobile', use: { ...devices['Pixel 7'] } },
   ],
   webServer: {

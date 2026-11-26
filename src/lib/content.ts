@@ -1,53 +1,11 @@
 import legalJson from '../generated/legal.json';
-import modulesJson from '../generated/modules.json';
-import nicaraguaJson from '../generated/nicaragua.json';
-import stickersJson from '../generated/stickers.json';
 import vowelsJson from '../generated/vowels.json';
 
 export type LegalDoc = { title: string; updated: string; summary: string[]; html: string };
-export type AppModule = { id: string; name: string; color: string };
-export type NicaItem = {
-  id: string;
-  name: string;
-  category: 'animal' | 'planta';
-  art: string;
-  tag?: string;
-  facts: string[];
-};
-export type Sticker = { id: string; label: string; name: string; module: string };
+export type Vowel = 'a' | 'e' | 'i' | 'o' | 'u';
 
 export const legal = legalJson as { terms: LegalDoc; privacy: LegalDoc };
-export const modules = modulesJson as AppModule[];
-export const nicaragua = nicaraguaJson as NicaItem[];
-export const stickers = stickersJson as Sticker[];
-export const vowels = vowelsJson as Record<
-  'a' | 'e' | 'i' | 'o' | 'u',
-  { word: string; art: string }[]
->;
-
-export const moduleGlyph: Record<string, string> = {
-  vocales: 'aeiou',
-  abecedario: 'Abc',
-  numeros: '123',
-  silabas: 'ma',
-  nicaragua: 'Nica',
-  sumas: '2+3',
-  memoria: 'a=a',
-  trazar: 'a 1',
-  oraciones: 'el oso',
-};
-
-export const moduleBlurb: Record<string, string> = {
-  vocales: 'Escuchar y reconocer a, e, i, o, u con dibujos.',
-  abecedario: 'De la a a la z, con la ñ incluida.',
-  numeros: 'Contar objetos y reconocer los números.',
-  silabas: 'Juntar letras para completar palabras.',
-  nicaragua: 'Animales y plantas de nuestro país.',
-  sumas: 'Primeras sumas con cosas que se pueden contar.',
-  memoria: 'Encontrar parejas de vocales, letras y números.',
-  trazar: 'Seguir con el dedo el trazo de las vocales y los números.',
-  oraciones: 'Ordenar palabras para armar oraciones cortas.',
-};
+export const vowels = vowelsJson as Record<Vowel, { word: string; art: string }[]>;
 
 export const faq = [
   {
