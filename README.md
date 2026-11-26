@@ -21,7 +21,7 @@ The app repo is the source of truth for the look and the content. `scripts/sync-
 
 - `src/theme.ts` → `tokens.css` (Tailwind `@theme` colors, module colors, radius, border)
 - `src/content/data/art.json` + the `PALETTE` in `src/components/drawing.tsx` → SVG illustrations
-- `legal.json`, `nicaragua.json`, `stickers.json`, module names and art names
+- `legal.json` (privacy and terms) and `vowels.json` (the words behind the vowel keyboard)
 
 Run `pnpm sync` after changing any of those in the app, and commit the result. Never edit
 `src/generated/` by hand.
@@ -29,6 +29,16 @@ Run `pnpm sync` after changing any of those in the app, and commit the result. N
 Screenshots in `src/assets/screens/` come from a real Android device: open the screen in the app
 and run `scripts/capture-screens.sh <name>` (needs `adb` and ImageMagick). Use a demo profile, not
 a real child's name.
+
+## Vowel audio
+
+The vowel keyboard plays recorded clips from `public/audio/vowels/` (`a-0.mp3` = "A de abeja.")
+and falls back to the browser's speech voice when a clip is missing. The clips are generated with
+ElevenLabs (`eleven_multilingual_v2`):
+
+1. Put `ELEVENLABS_API_KEY=...` in `.env.elevenlabs` (ignored by git).
+2. `pnpm audio --list-voices` lists the Spanish voices on the account.
+3. `pnpm audio <voice-id>` writes the 15 clips and `voice.json` with the voice used.
 
 ## Deploy
 

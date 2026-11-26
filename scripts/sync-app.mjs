@@ -48,12 +48,6 @@ export function parsePalette(drawingSource, colors) {
   );
 }
 
-export function parseModuleNames(contentSource) {
-  return Object.fromEntries(
-    entries(objectBody(contentSource, 'MODULE_NAMES')).map(([k, v]) => [k, resolveValue(v, {})]),
-  );
-}
-
 function kebab(name) {
   return name.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
 }
@@ -98,21 +92,6 @@ export function normalizeArt(art) {
   );
 }
 
-export function collectArtNames(documents) {
-  const names = {};
-  const walk = (node) => {
-    if (Array.isArray(node)) return node.forEach(walk);
-    if (!node || typeof node !== 'object') return;
-    const name = node.word ?? node.name ?? node.singular;
-    if (typeof node.art === 'string' && typeof name === 'string' && !(node.art in names)) {
-      names[node.art] = name.charAt(0).toUpperCase() + name.slice(1);
-    }
-    Object.values(node).forEach(walk);
-  };
-  documents.forEach(walk);
-  return names;
-}
-
 function writeJson(path, data) {
   writeFileSync(path, `${JSON.stringify(data, null, 2)}\n`);
 }
@@ -129,30 +108,11 @@ export function sync(appDir, outDir = ROOT) {
     parsePalette(read('src/components/drawing.tsx'), theme.colors),
   );
 
-  const names = parseModuleNames(read('src/content/index.ts'));
-  writeJson(
-    join(generated, 'modules.json'),
-    Object.entries(names).map(([id, name]) => ({ id, name, color: theme.moduleColor[id] })),
-  );
-
   writeJson(
     join(generated, 'art.json'),
     normalizeArt(JSON.parse(read('src/content/data/art.json'))),
   );
-  const contentFiles = [
-    'alphabet',
-    'vowels',
-    'syllables',
-    'numbers',
-    'nicaragua',
-    'sentences',
-    'stickers',
-  ];
-  writeJson(
-    join(generated, 'art-names.json'),
-    collectArtNames(contentFiles.map((name) => JSON.parse(read(`src/content/data/${name}.json`)))),
-  );
-  for (const file of ['legal.json', 'nicaragua.json', 'stickers.json', 'vowels.json']) {
+  for (const file of ['legal.json', 'vowels.json']) {
     copyFileSync(join(appDir, 'src/content/data', file), join(generated, file));
   }
 
@@ -177,7 +137,6 @@ export function sync(appDir, outDir = ROOT) {
   mkdirSync(publicDir, { recursive: true });
   copyFileSync(join(appDir, 'assets/images/favicon.png'), join(publicDir, 'favicon.png'));
   copyFileSync(join(appDir, 'assets/images/icon.png'), join(publicDir, 'apple-touch-icon.png'));
-  copyFileSync(join(appDir, 'assets/brand/mark.svg'), join(publicDir, 'volcancito-logo.svg'));
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {

@@ -1,5 +1,4 @@
 ---
-import credits from '../assets/photos/credits.json';
 import MomotomboMark from './MomotomboMark.astro';
 import { site } from '../lib/site';
 
@@ -26,10 +25,7 @@ const columns = [
   },
   {
     title: 'Ayuda',
-    links: [
-      { href: '/ayuda/', label: 'Preguntas y contacto' },
-      { href: '/borrar-cuenta/', label: 'Borrar cuenta' },
-    ],
+    links: [{ href: '/ayuda/', label: 'Preguntas y contacto' }],
   },
   {
     title: 'Legal',
@@ -84,22 +80,11 @@ const year = new Date().getFullYear();
       </a>
     </div>
   </div>
-  <p class="mt-12 max-w-4xl text-note">
-    Fotos:
-    {
-      credits.map((credit, i) => (
-        <>
-          <a href={credit.page} class="underline underline-offset-2">
-            {credit.title.split(' (')[0]}
-          </a>
-          , {credit.creator},{' '}
-          <a href={credit.licenseUrl} class="underline underline-offset-2">
-            {credit.license}
-          </a>
-          {i < credits.length - 1 ? '; ' : '.'}
-        </>
-      ))
-    }
+  <p class="mt-12 text-note">
+    Voz de las vocales generada con <a
+      href="https://elevenlabs.io"
+      class="underline underline-offset-2">ElevenLabs</a
+    >.
   </p>
   <p class="mt-4 text-note">© {year} Momotombo Devs</p>
 </footer>

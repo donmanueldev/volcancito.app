@@ -13,6 +13,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "sync": "node scripts/sync-app.mjs",
+    "audio": "node scripts/generate-audio.mjs",
     "check": "astro check",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",

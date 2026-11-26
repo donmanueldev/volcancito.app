@@ -1,17 +1,6 @@
-const capitalize = (word: string) => word.charAt(0).toUpperCase() + word.slice(1);
+import { prepareVoice, speak } from './voice';
 
-function speak(text: string) {
-  if (!('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'es-419';
-  utterance.rate = 0.85;
-  const voice = window.speechSynthesis
-    .getVoices()
-    .find((v) => v.lang.toLowerCase().startsWith('es'));
-  if (voice) utterance.voice = voice;
-  window.speechSynthesis.speak(utterance);
-}
+const capitalize = (word: string) => word.charAt(0).toUpperCase() + word.slice(1);
 
 function initVowels() {
   const field = document.querySelector<HTMLElement>('[data-vowel-field]');
@@ -21,8 +10,21 @@ function initVowels() {
   const word = field.querySelector<HTMLElement>('[data-vowel-word]');
   const heading = field.querySelector<HTMLElement>('[data-vowel-heading]');
   const arts = [...field.querySelectorAll<HTMLElement>('[data-vowel-art]')];
+  const listen = field.querySelector<HTMLButtonElement>('[data-vowel-listen]');
   const position: Record<string, number> = {};
   let current = 'a';
+  let phrase = 'A de abeja.';
+  let clip = '/audio/vowels/a-0.mp3';
+  const audio = new Audio();
+  audio.preload = 'none';
+  const say = () => {
+    window.speechSynthesis?.cancel();
+    audio.pause();
+    audio.src = clip;
+    audio.currentTime = 0;
+    audio.play().catch(() => speak(phrase));
+  };
+  listen?.addEventListener('click', say);
 
   for (const key of keys) {
     key.addEventListener('click', () => {
@@ -40,30 +42,46 @@ function initVowels() {
       if (glyph) glyph.textContent = `${letter.toUpperCase()}${letter}`;
       if (word) word.textContent = capitalize(chosen);
       if (heading) heading.textContent = letter;
-      speak(`${letter}, de ${chosen}`);
+      phrase = `${letter.toUpperCase()} de ${chosen}.`;
+      clip = `/audio/vowels/${letter}-${index}.mp3`;
+      say();
     });
   }
 }
 
 function initStages() {
   const section = document.querySelector<HTMLElement>('[data-stages]');
-  const range = section?.querySelector<HTMLInputElement>('[data-stage-range]');
-  if (!section || !range) return;
-  const stages: { name: string; clause: string }[] = JSON.parse(section.dataset.stages ?? '[]');
-  const clause = section.querySelector<HTMLElement>('[data-stage-clause]');
-  const names = [...section.querySelectorAll<HTMLElement>('[data-stage-name]')];
+  if (!section) return;
+  const steps = [...section.querySelectorAll<HTMLButtonElement>('[data-stage-name]')];
   const screens = [...section.querySelectorAll<HTMLElement>('[data-stage-screen]')];
+  let current = 0;
+  let timer: number | undefined;
 
-  const show = () => {
-    const index = Number(range.value);
-    const stage = stages[index];
-    if (!stage) return;
-    if (clause) clause.textContent = stage.clause;
-    range.setAttribute('aria-valuetext', stage.name);
-    names.forEach((name, i) => name.classList.toggle('opacity-60', i !== index));
-    screens.forEach((screen, i) => screen.classList.toggle('opacity-0', i !== index));
+  const show = (index: number) => {
+    current = index;
+    steps.forEach((step, i) => step.setAttribute('aria-pressed', String(i === index)));
+    screens.forEach((screen, i) => {
+      screen.classList.toggle('opacity-0', i !== index);
+      screen.setAttribute('aria-hidden', String(i !== index));
+    });
   };
-  range.addEventListener('input', show);
+  const stop = () => window.clearInterval(timer);
+
+  steps.forEach((step, i) =>
+    step.addEventListener('click', () => {
+      stop();
+      autoplay.disconnect();
+      show(i);
+    }),
+  );
+
+  const autoplay = new IntersectionObserver(([entry]) => {
+    stop();
+    if (!entry?.isIntersecting) return;
+    timer = window.setInterval(() => show((current + 1) % steps.length), 4000);
+  });
+  show(0);
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) autoplay.observe(section);
 }
 
 function initReveal() {
@@ -85,6 +103,7 @@ function initReveal() {
 
 export function initLanding() {
   initReveal();
+  prepareVoice();
   initVowels();
   initStages();
 }
