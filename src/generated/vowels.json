@@ -1,0 +1,72 @@
+{
+  "a": [
+    {
+      "word": "abeja",
+      "art": "abeja"
+    },
+    {
+      "word": "araña",
+      "art": "arana"
+    },
+    {
+      "word": "avión",
+      "art": "avion"
+    }
+  ],
+  "e": [
+    {
+      "word": "elefante",
+      "art": "elefante"
+    },
+    {
+      "word": "estrella",
+      "art": "estrella"
+    },
+    {
+      "word": "escoba",
+      "art": "escoba"
+    }
+  ],
+  "i": [
+    {
+      "word": "iguana",
+      "art": "iguana"
+    },
+    {
+      "word": "isla",
+      "art": "isla"
+    },
+    {
+      "word": "iglesia",
+      "art": "iglesia"
+    }
+  ],
+  "o": [
+    {
+      "word": "oso",
+      "art": "oso"
+    },
+    {
+      "word": "ojo",
+      "art": "ojo"
+    },
+    {
+      "word": "oveja",
+      "art": "oveja"
+    }
+  ],
+  "u": [
+    {
+      "word": "uva",
+      "art": "uva"
+    },
+    {
+      "word": "uno",
+      "art": "uno"
+    },
+    {
+      "word": "uña",
+      "art": "una"
+    }
+  ]
+}

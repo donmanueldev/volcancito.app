@@ -152,7 +152,7 @@ export function sync(appDir, outDir = ROOT) {
     join(generated, 'art-names.json'),
     collectArtNames(contentFiles.map((name) => JSON.parse(read(`src/content/data/${name}.json`)))),
   );
-  for (const file of ['legal.json', 'nicaragua.json', 'stickers.json']) {
+  for (const file of ['legal.json', 'nicaragua.json', 'stickers.json', 'vowels.json']) {
     copyFileSync(join(appDir, 'src/content/data', file), join(generated, file));
   }
 

@@ -13,7 +13,7 @@ const { doc, description } = Astro.props;
 <BaseLayout title={doc.title} description={description}>
   <article class="mx-auto max-w-2xl px-5 pt-6">
     <h1 class="text-4xl font-bold">{doc.title}</h1>
-    <p class="mt-2 text-sm font-medium text-muted">Actualizado el {doc.updated}</p>
+    <p class="mt-2 text-sm font-medium">Actualizado el {doc.updated}</p>
     {
       doc.summary.length > 0 && (
         <ul class="card mt-6 space-y-1 bg-success-bg">

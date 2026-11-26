@@ -25,7 +25,7 @@ const tiles = [
       {
         tiles.map((tile) => (
           <span
-            class="absolute flex h-[50px] w-[50px] items-center justify-center rounded-xl font-school text-[32px] leading-none font-bold hard-shadow-sm ink-border"
+            class="absolute flex h-[50px] w-[50px] items-center justify-center rounded-xl font-school text-[32px] leading-none font-bold ink-border"
             style={`left:${tile.x}px;top:${tile.y}px;background:${tile.fill};transform:rotate(${tile.rotate}deg);color:${tile.ink ? 'var(--color-ink)' : '#fff'}`}
             aria-hidden="true"
           >

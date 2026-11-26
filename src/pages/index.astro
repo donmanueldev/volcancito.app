@@ -1,269 +1,455 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import Art from '../components/Art.astro';
 import Mascot from '../components/Mascot.astro';
-import PhoneFrame from '../components/PhoneFrame.astro';
-import SectionTitle from '../components/SectionTitle.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { artIds, artLabel } from '../lib/art';
-import { faq, moduleBlurb, moduleGlyph, modules, nicaragua } from '../lib/content';
+import granada from '../assets/photos/granada.jpg';
+import guardabarranco from '../assets/photos/guardabarranco.jpg';
+import momotombo from '../assets/photos/momotombo.jpg';
+import sacuanjoche from '../assets/photos/sacuanjoche.jpg';
+import { faq, vowels } from '../lib/content';
 import { screens } from '../lib/screens';
 
-const tilts = [1, -0.6, 0.8, 1.5, -1, -1.2, 1, 0.6, -0.8];
-const heroScreens = [screens[0], screens[1]].filter((screen) => screen !== undefined);
-const stripArt = [
-  'abeja',
-  'sol',
-  'iguana',
-  'oso',
-  'uva',
-  'jaguar',
-  'tucan',
-  'volcan',
-  'helado',
-  'pato',
-  'luna',
-  'gallo-pinto',
+const vowelKeys = [
+  { letter: 'a', field: 'var(--color-yellow)' },
+  { letter: 'e', field: 'var(--color-blue)' },
+  { letter: 'i', field: 'var(--color-green)' },
+  { letter: 'o', field: 'var(--color-teal)' },
+  { letter: 'u', field: 'var(--color-tangerine)' },
+] as const;
+
+const screenById = Object.fromEntries(screens.map((screen) => [screen.id, screen]));
+const stages = [
+  { name: 'Escuchar', clause: 'Primero, escucha la letra', screen: screenById.vowels },
+  { name: 'Responder', clause: 'Luego, responde la ronda', screen: screenById.play },
+  { name: 'Trazar', clause: 'Después, traza con el dedo', screen: screenById.trazar },
+  { name: 'Armar', clause: 'Al final, arma la oración', screen: screenById.oraciones },
 ];
-const steps = [
+
+const features = [
   {
-    art: 'abeja',
-    title: 'Cada letra se vuelve palabra',
-    body: 'Letras y números con dibujos y voz. Se puede jugar sin saber leer todavía.',
-    color: 'bg-module-vocales',
+    phrase: 'Sin anuncios',
+    body: 'Ni anuncios ni enlaces de compra para los niños. Volcancito es gratis, y si algún día cambia, te avisamos antes.',
+    field: 'bg-yellow text-ink',
+    mirror: false,
   },
   {
-    art: 'estrella',
-    title: 'Estrellas que se vuelven stickers',
-    body: 'Cada respuesta buena da una estrella. Con las estrellas se ganan stickers para su colección.',
-    color: 'bg-yellow',
+    phrase: 'Sin internet',
+    body: 'Los juegos y el progreso se guardan en el teléfono, así que se puede jugar sin conexión.',
+    field: 'bg-navy text-white',
+    mirror: true,
   },
   {
-    art: 'casa',
-    title: 'Un adulto crea la cuenta, cada niño su perfil',
-    body: 'En la Zona de papás eliges el límite diario, la voz y los sonidos.',
-    color: 'bg-module-abecedario',
+    phrase: 'Tú pones el tiempo',
+    body: 'En la Zona de papás eliges 15, 30 o 45 minutos al día, o sin límite, y una hora de descanso.',
+    field: 'bg-green text-ink',
+    mirror: false,
   },
 ];
-const parentFeatures = [
-  { title: 'Límite diario', body: '15, 30 o 45 minutos, o sin límite, y hora de descanso.' },
-  { title: 'Progreso por niño', body: 'Qué le cuesta, cuántas estrellas lleva y cuánto juega.' },
-  { title: 'Sin anuncios', body: 'Ni anuncios ni enlaces de compra para los niños.' },
-  { title: 'Funciona sin internet', body: 'Los juegos y el progreso se guardan en el teléfono.' },
-  { title: 'Perfiles sin correo', body: 'Los niños juegan con su apodo; la cuenta es del adulto.' },
-  { title: 'Puerta para adultos', body: 'Una pregunta sencilla protege la Zona de papás.' },
+
+type Tile =
+  | { kind: 'letter'; glyph: string; caption: string; tile: string }
+  | { kind: 'art'; art: string; caption: string; tile: string }
+  | { kind: 'photo'; src: ImageMetadata; caption: string; alt: string };
+
+const tiles: Tile[] = [
+  { kind: 'art', art: 'abeja', caption: 'Abeja', tile: 'bg-white' },
+  { kind: 'letter', glyph: 'ñ', caption: 'Ñandú', tile: 'bg-blue' },
+  {
+    kind: 'photo',
+    src: guardabarranco,
+    caption: 'Guardabarranco',
+    alt: 'Un guardabarranco de cola azul posado en una baranda blanca.',
+  },
+  { kind: 'art', art: 'gallo-pinto', caption: 'Gallo pinto', tile: 'bg-sand' },
+  { kind: 'letter', glyph: '3', caption: 'Tres', tile: 'bg-green' },
+  { kind: 'art', art: 'iguana', caption: 'Iguana', tile: 'bg-success-bg' },
+  {
+    kind: 'photo',
+    src: momotombo,
+    caption: 'Momotombo',
+    alt: 'El volcán Momotombo detrás del lago Xolotlán, con nubes.',
+  },
+  { kind: 'art', art: 'quesillo', caption: 'Quesillo', tile: 'bg-white' },
+  { kind: 'letter', glyph: 'ma', caption: 'Sílabas', tile: 'bg-teal' },
+  { kind: 'art', art: 'xolotlan', caption: 'Xolotlán', tile: 'bg-sand' },
+  {
+    kind: 'photo',
+    src: sacuanjoche,
+    caption: 'Sacuanjoche',
+    alt: 'Una flor de sacuanjoche blanca y amarilla sobre la tierra.',
+  },
+  { kind: 'art', art: 'gueguense', caption: 'Güegüense', tile: 'bg-success-bg' },
+  { kind: 'letter', glyph: 'e', caption: 'Vocales', tile: 'bg-yellow' },
+  { kind: 'art', art: 'tucan', caption: 'Tucán', tile: 'bg-white' },
+  {
+    kind: 'photo',
+    src: granada,
+    caption: 'Granada',
+    alt: 'Una calle de Granada con casas de colores y aceras altas.',
+  },
 ];
-const featuredNica = nicaragua.slice(0, 6);
+
+const capitalize = (word: string) => word.charAt(0).toUpperCase() + word.slice(1);
+const letterTile = 'font-school text-[clamp(3rem,7vw,7rem)] leading-none font-bold';
 ---
 
 <BaseLayout>
-  <section
-    class="mx-auto grid max-w-6xl items-center gap-12 px-5 pt-8 pb-16 md:grid-cols-[1.1fr_1fr] md:pt-14"
-  >
-    <div class="flex flex-col items-start gap-6">
-      <span class="pill">De 3 a 8 años · Gratis y sin anuncios</span>
-      <h1 class="text-[42px] leading-[1.05] font-bold text-balance md:text-6xl">
-        Aprender a leer y contar, <span class="font-school text-coral">jugando</span>
-      </h1>
-      <p class="max-w-lg text-lg leading-relaxed font-medium text-muted">
-        Volcancito acompaña a niñas y niños con letras, sílabas y números. Rondas cortas, dibujos
-        con voz, stickers para coleccionar y una Zona de papás para cuidar el tiempo de juego.
-      </p>
-      <div class="flex flex-wrap gap-4">
-        <a href="#descargar" class="btn btn-primary">Descargar la app</a>
-        <a href="/pantallas" class="btn btn-secondary">Ver pantallas</a>
-      </div>
-    </div>
-    <div class="relative flex min-h-[420px] items-end justify-center">
-      <div class="absolute top-0 left-1/2 -translate-x-1/2 md:left-[42%]">
-        <Mascot size={150} hat />
-      </div>
-      <div class="flex items-end gap-3 pt-36 sm:gap-4">
-        {
-          heroScreens.map((screen, i) => (
-            <PhoneFrame src={screen.src} alt={screen.alt} tilt={i === 0 ? -4 : 4} eager />
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <section class="mx-auto max-w-6xl px-5 py-16" aria-labelledby="modulos">
-    <SectionTitle id="modulos" kicker="Nueve juegos, un camino" title="Qué aprenden">
-      <p class="max-w-2xl font-medium text-muted">
-        Un camino de niveles va mezclando los juegos. También se puede practicar libre cada uno.
-      </p>
-    </SectionTitle>
-    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        modules.map((module, i) => (
-          <li
-            class="card flex min-h-40 flex-col justify-between gap-4 text-white"
-            style={`background:${module.color};transform:rotate(${tilts[i % tilts.length]}deg)`}
-          >
-            <div class="flex items-start justify-between gap-3">
-              <h3 class="text-2xl font-bold">{module.name}</h3>
-              <span class="font-school text-4xl leading-none font-bold" aria-hidden="true">
-                {moduleGlyph[module.id]}
-              </span>
-            </div>
-            <p class="font-medium">{moduleBlurb[module.id]}</p>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-
-  <section class="mx-auto max-w-6xl px-5 py-16" aria-labelledby="como">
-    <SectionTitle id="como" kicker="Cómo funciona" title="Jugar un ratito cada día" />
-    <ol class="grid gap-6 md:grid-cols-3">
-      {
-        steps.map((step) => (
-          <li class="card flex flex-col gap-4 bg-white">
-            <div
-              class={`flex h-28 items-center justify-center rounded-app-md ink-border ${step.color}`}
-            >
-              <Art id={step.art} size={88} />
-            </div>
-            <h3 class="text-xl font-bold">{step.title}</h3>
-            <p class="font-medium text-muted">{step.body}</p>
-          </li>
-        ))
-      }
-    </ol>
-  </section>
-
-  <section class="py-16" aria-labelledby="pantallas">
-    <div class="mx-auto max-w-6xl px-5">
-      <SectionTitle id="pantallas" kicker="La app por dentro" title="Pantallas">
-        <a href="/pantallas" class="font-semibold text-link underline">Ver todas las pantallas</a>
-      </SectionTitle>
-    </div>
+  <section aria-labelledby="titulo" class="pb-24">
     <div
-      class="flex snap-x snap-mandatory gap-8 overflow-x-auto px-5 pt-2 pb-8 lg:justify-center"
-      tabindex="0"
-      aria-label="Galería de pantallas, desliza para ver más"
+      class="grid h-[38svh] grid-cols-3 grid-rows-2 overflow-hidden md:h-[52svh] md:grid-cols-6"
+      aria-hidden="true"
     >
-      {
-        screens.slice(1, 5).map((screen, i) => (
-          <div class="shrink-0 snap-center">
-            <PhoneFrame
-              src={screen.src}
-              alt={screen.alt}
-              caption={screen.caption}
-              tilt={i % 2 ? 2 : -2}
-            />
-          </div>
-        ))
-      }
-    </div>
-  </section>
-
-  <section class="mx-auto max-w-6xl px-5 py-16" aria-labelledby="nicaragua">
-    <div class="card overflow-hidden bg-navy p-0 text-white">
-      <div class="p-6 md:p-10">
-        <SectionTitle id="nicaragua" title="¡Conocé Nicaragua!">
-          <p class="max-w-xl font-medium text-white/90">
-            Mirá, escuchá y jugá con los animales y plantas de tu país: el guardabarranco, el
-            sacuanjoche, el madroño y muchos más. Cada uno se vuelve sticker del álbum nica.
-          </p>
-        </SectionTitle>
+      <div class="col-span-2 overflow-hidden">
+        <Image
+          src={momotombo}
+          alt=""
+          widths={[640, 1280]}
+          sizes="(min-width: 768px) 33vw, 66vw"
+          loading="eager"
+          class="drift h-full w-full object-cover"
+        />
       </div>
-      <ul
-        class="grid grid-cols-2 gap-4 bg-white p-6 text-ink sm:grid-cols-3 md:p-10 lg:grid-cols-6"
-      >
-        {
-          featuredNica.map((item) => (
-            <li class="flex flex-col items-center gap-2 rounded-app-md bg-white p-3 hard-shadow-sm ink-border">
-              <div class="flex w-full justify-center rounded-app-sm bg-sand">
-                <Art id={item.art} size={92} label={item.name} />
-              </div>
-              <span class="text-center text-sm font-bold">{item.name}</span>
-              {item.tag && <span class="text-xs font-semibold text-muted">{item.tag}</span>}
-            </li>
-          ))
-        }
-      </ul>
+      <div class="flex items-center justify-center bg-module-vocales">
+        <span class={letterTile}>a</span>
+      </div>
+      <div class="hidden overflow-hidden md:block">
+        <Image
+          src={guardabarranco}
+          alt=""
+          widths={[400, 800]}
+          sizes="17vw"
+          loading="eager"
+          class="h-full w-full object-cover object-[50%_25%]"
+        />
+      </div>
+      <div class="flex items-end justify-center bg-yellow md:row-span-2">
+        <Mascot size={180} hat class="h-auto w-[78%] max-w-56" />
+      </div>
+      <div class="hidden items-center justify-center bg-blue md:flex">
+        <span class={letterTile}>1</span>
+      </div>
+      <div class="overflow-hidden">
+        <Image
+          src={sacuanjoche}
+          alt=""
+          widths={[400, 800]}
+          sizes="(min-width: 768px) 17vw, 33vw"
+          loading="eager"
+          class="h-full w-full object-cover object-[80%_50%]"
+        />
+      </div>
+      <div class="flex items-center justify-center bg-green">
+        <span class={letterTile}>b</span>
+      </div>
+      <div class="hidden items-center justify-center bg-teal md:flex">
+        <span class={letterTile}>ñ</span>
+      </div>
+      <div class="hidden overflow-hidden md:block">
+        <Image
+          src={granada}
+          alt=""
+          widths={[400, 800]}
+          sizes="17vw"
+          loading="eager"
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div class="hidden items-center justify-center bg-tangerine md:flex">
+        <span class={letterTile}>3</span>
+      </div>
     </div>
-  </section>
 
-  <section class="mx-auto max-w-6xl px-5 py-16" aria-labelledby="ilustraciones">
-    <SectionTitle id="ilustraciones" kicker="Dibujadas para la app" title="Ilustraciones">
-      <a href="/ilustraciones" class="font-semibold text-link underline"
-        >Ver las {artIds.length} ilustraciones</a
-      >
-    </SectionTitle>
-    <ul class="grid grid-cols-3 gap-4 sm:grid-cols-4 lg:grid-cols-6">
-      {
-        stripArt.map((id, i) => (
-          <li
-            class="flex aspect-square items-center justify-center rounded-app-md bg-white p-2 hard-shadow-sm ink-border"
-            style={`transform:rotate(${tilts[i % tilts.length]}deg)`}
-          >
-            <Art id={id} size={96} label={artLabel(id)} class="h-full w-full" />
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-
-  <section class="mx-auto max-w-6xl px-5 py-16" aria-labelledby="papas">
-    <SectionTitle id="papas" kicker="Para mamá, papá o tutor" title="Zona de papás" />
-    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        parentFeatures.map((feature) => (
-          <li class="card bg-white">
-            <h3 class="text-lg font-bold">{feature.title}</h3>
-            <p class="mt-1 font-medium text-muted">{feature.body}</p>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-
-  <section class="mx-auto max-w-3xl px-5 py-16" aria-labelledby="preguntas">
-    <SectionTitle id="preguntas" title="Preguntas frecuentes" center />
-    <div class="flex flex-col gap-4">
-      {
-        faq.map((item, i) => (
-          <details class="card group bg-white p-0" open={i === 0}>
-            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 p-5 text-lg font-bold">
-              {item.q}
-              <span class="text-2xl transition-transform group-open:rotate-45" aria-hidden="true">
-                +
-              </span>
-            </summary>
-            <p class="px-5 pb-5 font-medium text-muted">{item.a}</p>
-          </details>
-        ))
-      }
+    <div class="grid gap-8 frame pt-14 md:pt-20 lg:grid-cols-[42%_1fr] lg:gap-0 lg:pt-24">
+      <div class="order-2 flex flex-col items-start gap-8 lg:order-1 lg:pt-4 lg:pr-10">
+        <p class="max-w-[30ch] text-lead font-medium">
+          Volcancito es una app gratis para niñas y niños de 3 a 8 años: letras, sílabas, números y
+          Nicaragua, con dibujos que hablan y sin anuncios.
+        </p>
+        <a href="#vocales" class="btn btn-primary">Pruébalo aquí</a>
+      </div>
+      <h1 id="titulo" class="order-1 text-display font-semibold lg:order-2">
+        <span class="mask-line"><span>Leer y contar,</span></span>
+        <span class="mask-line" style="--line-delay:110ms"><span>jugando</span></span>
+      </h1>
     </div>
   </section>
 
   <section
-    id="descargar"
-    class="mx-auto max-w-4xl scroll-mt-6 px-5 py-16"
-    aria-labelledby="descargar-titulo"
+    id="vocales"
+    aria-labelledby="vocales-titulo"
+    class="relative flex flex-col gap-10 overflow-hidden frame py-16 transition-colors duration-300 lg:block lg:min-h-[92svh]"
+    style={`background:${vowelKeys[0].field}`}
+    data-vowel-field
   >
-    <div class="card flex flex-col items-center gap-6 bg-yellow px-6 py-10 text-center">
-      <Mascot size={120} />
-      <h2 id="descargar-titulo" class="text-3xl font-bold md:text-4xl">
-        Muy pronto en tu teléfono
+    <div class="relative z-10 max-w-2xl lg:max-w-md" data-reveal>
+      <h2 id="vocales-titulo" class="text-title font-bold">
+        Toca una <span data-vowel-heading>a</span>
       </h2>
-      <p class="max-w-lg font-medium">
-        Volcancito estará en App Store y Google Play. Es gratis y sin anuncios.
+      <p class="mt-4 text-body font-medium">
+        Así empieza Volcancito: cada letra con su dibujo y su voz. Toca otra vocal, o la misma otra
+        vez para cambiar de palabra.
       </p>
-      <div class="flex flex-wrap justify-center gap-4">
-        <span
-          class="inline-flex h-13 items-center rounded-full border-dashed bg-white/60 px-6 font-bold ink-border"
+    </div>
+
+    <div
+      data-ui
+      data-reveal
+      style="--reveal-order:1"
+      class="relative w-full rounded-app-lg bg-white p-5 ink-border lg:absolute lg:right-margin lg:bottom-[8svh] lg:w-[min(56vw,44rem)] lg:p-8"
+    >
+      <div class="flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-10">
+        <p
+          class="font-school text-[clamp(6rem,14vw,12rem)] leading-[0.85] font-bold text-ink"
+          aria-hidden="true"
+          data-vowel-glyph
         >
-          App Store · Próximamente
-        </span>
-        <span
-          class="inline-flex h-13 items-center rounded-full border-dashed bg-white/60 px-6 font-bold ink-border"
-        >
-          Google Play · Próximamente
-        </span>
+          Aa
+        </p>
+        <div class="flex flex-col items-center gap-3">
+          <div class="rounded-app-md bg-sand p-3">
+            {
+              vowelKeys.map(({ letter }) =>
+                vowels[letter].map((entry, i) => (
+                  <div data-vowel-art={`${letter}-${i}`} hidden={!(letter === 'a' && i === 0)}>
+                    <Art id={entry.art} size={168} class="h-auto w-[clamp(7rem,14vw,10.5rem)]" />
+                  </div>
+                )),
+              )
+            }
+          </div>
+          <p
+            class="font-school text-[clamp(2.25rem,4vw,3.25rem)] leading-none font-bold"
+            aria-live="polite"
+            data-vowel-word
+          >
+            {capitalize(vowels.a[0]?.word ?? '')}
+          </p>
+        </div>
+      </div>
+      <div class="mt-6 grid grid-cols-5 gap-2 md:gap-3" role="group" aria-label="Vocales">
+        {
+          vowelKeys.map(({ letter, field }, i) => (
+            <button
+              type="button"
+              class="flex min-h-16 cursor-pointer items-center justify-center rounded-app-sm bg-white font-school text-[2rem] font-bold transition-transform duration-100 ink-border hover:-translate-y-0.5 active:translate-y-0.5 aria-pressed:bg-ink aria-pressed:text-white"
+              aria-pressed={i === 0 ? 'true' : 'false'}
+              data-vowel-key={letter}
+              data-field={field}
+              data-words={JSON.stringify(vowels[letter].map((entry) => entry.word))}
+            >
+              {`${letter.toUpperCase()}${letter}`}
+            </button>
+          ))
+        }
       </div>
     </div>
+  </section>
+
+  {
+    features.map((feature, i) => (
+      <section
+        aria-labelledby={`ventaja-${i}`}
+        class={`relative flex min-h-[44svh] flex-col justify-between gap-12 frame py-12 lg:min-h-[72svh] ${feature.field}`}
+      >
+        <p
+          class:list={[
+            'max-w-[30ch] text-lead font-medium lg:w-[30ch]',
+            feature.mirror ? 'md:mr-auto lg:ml-[8.33%]' : 'md:ml-auto lg:ml-[58.33%]',
+          ]}
+          data-reveal
+        >
+          {feature.body}
+        </p>
+        <h2
+          id={`ventaja-${i}`}
+          class:list={['text-display font-bold', feature.mirror && 'md:text-right']}
+          data-reveal
+          style="--reveal-order:1"
+        >
+          {feature.phrase}
+        </h2>
+      </section>
+    ))
+  }
+
+  <section
+    id="como"
+    aria-labelledby="como-titulo"
+    class="grid md:min-h-[88svh] md:grid-cols-2"
+    data-stages={JSON.stringify(
+      stages.map((stage) => ({ name: stage.name, clause: stage.clause })),
+    )}
+  >
+    <div class="order-2 flex flex-col justify-between gap-10 paper-dots frame py-12 md:order-1">
+      <h2 id="como-titulo" class="text-title font-bold" aria-live="polite" data-stage-clause>
+        {stages[0]?.clause}
+      </h2>
+      <div data-ui class="flex flex-col gap-4">
+        <label for="etapa" class="text-body font-semibold">Mueve para ver una partida</label>
+        <input
+          id="etapa"
+          type="range"
+          min="0"
+          max={stages.length - 1}
+          step="1"
+          value="0"
+          class="stage-range w-full cursor-pointer"
+          aria-valuetext={stages[0]?.name}
+          data-stage-range
+        />
+        <ol class="grid grid-cols-2 gap-2 text-body font-medium xl:grid-cols-4">
+          {
+            stages.map((stage, i) => (
+              <li class:list={['transition-opacity', i > 0 && 'opacity-60']} data-stage-name={i}>
+                {stage.name}
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+    <div class="order-1 flex items-center justify-center overflow-hidden bg-blue py-12 md:order-2">
+      <div data-ui class="relative w-[min(17rem,62vw)]">
+        {
+          stages.map((stage, i) =>
+            stage.screen ? (
+              <div
+                class:list={[
+                  'overflow-hidden rounded-[2.25rem] bg-ink p-1.5 transition-opacity duration-200 ink-border',
+                  i > 0 && 'absolute inset-0 opacity-0',
+                ]}
+                data-stage-screen={i}
+              >
+                <Image
+                  src={stage.screen.src}
+                  alt={stage.screen.alt}
+                  widths={[280, 560]}
+                  sizes="17rem"
+                  class="block h-auto w-full rounded-[1.75rem]"
+                />
+              </div>
+            ) : null,
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="palabras" aria-labelledby="palabras-titulo" class="frame py-2">
+    <ul class="grid grid-cols-2 gap-1.5 md:grid-cols-4 md:gap-2">
+      <li
+        class="col-span-2 flex flex-col justify-end bg-navy p-5 text-white lg:col-span-1 lg:aspect-square lg:p-8"
+      >
+        <h2 id="palabras-titulo" class="text-[2rem] leading-tight font-bold">
+          De la a a Nicaragua
+        </h2>
+        <p class="mt-3 text-body font-medium">
+          Palabras, números, comidas, animales y lugares del país, dibujados para la app.
+        </p>
+      </li>
+      {
+        tiles.map((tile, i) => (
+          <li
+            class:list={[
+              'relative flex aspect-square flex-col items-center justify-center overflow-hidden',
+              tile.kind !== 'photo' && tile.tile,
+              i === tiles.length - 1 && 'hidden lg:flex',
+            ]}
+            data-reveal
+            style={`--reveal-order:${i % 4}`}
+          >
+            {tile.kind === 'photo' && (
+              <Image
+                src={tile.src}
+                alt={tile.alt}
+                widths={[360, 720]}
+                sizes="(min-width: 768px) 25vw, 50vw"
+                class="absolute inset-0 h-full w-full object-cover"
+              />
+            )}
+            {tile.kind === 'art' && <Art id={tile.art} size={200} class="h-auto w-[58%]" />}
+            {tile.kind === 'letter' && (
+              <span class="font-school text-display font-bold" aria-hidden="true">
+                {tile.glyph}
+              </span>
+            )}
+            {tile.kind !== 'letter' && (
+              <span
+                class:list={[
+                  'absolute top-4 left-4 text-note font-bold',
+                  tile.kind === 'photo' && 'rounded-full bg-white px-3 py-1',
+                ]}
+              >
+                {tile.caption}
+              </span>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section id="preguntas" aria-labelledby="preguntas-titulo">
+    <div class="flex min-h-[24svh] items-end bg-teal frame py-10 lg:min-h-[40svh]">
+      <h2 id="preguntas-titulo" class="text-display font-bold">Preguntas de papás</h2>
+    </div>
+    {
+      faq.map((item, i) => (
+        <div
+          class:list={[
+            'grid gap-4 frame py-12 md:grid-cols-12 md:py-14',
+            i % 2 ? 'bg-sand' : 'bg-paper',
+          ]}
+        >
+          <h3 class="text-[1.75rem] leading-tight font-bold md:col-span-5" data-reveal>
+            {item.q}
+          </h3>
+          <p class="text-body md:col-span-6 md:col-start-7" data-reveal style="--reveal-order:1">
+            {item.a}
+          </p>
+        </div>
+      ))
+    }
   </section>
 </BaseLayout>
+
+<style>
+  .stage-range {
+    appearance: none;
+    height: 2.25rem;
+    background: transparent;
+  }
+  .stage-range::-webkit-slider-runnable-track {
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--color-ink);
+  }
+  .stage-range::-moz-range-track {
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--color-ink);
+  }
+  .stage-range::-webkit-slider-thumb {
+    appearance: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-top: -0.875rem;
+    border: 3px solid var(--color-ink);
+    border-radius: 0.6rem;
+    background: var(--color-yellow);
+  }
+  .stage-range::-moz-range-thumb {
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid var(--color-ink);
+    border-radius: 0.6rem;
+    background: var(--color-yellow);
+  }
+</style>
+
+<script>
+  import { initLanding } from '../scripts/landing';
+  initLanding();
+</script>
