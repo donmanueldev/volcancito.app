@@ -1,42 +1,105 @@
 ---
-import Logo from './Logo.astro';
+import credits from '../assets/photos/credits.json';
 import MomotomboMark from './MomotomboMark.astro';
 import { site } from '../lib/site';
 
-const links = [
-  { href: '/privacidad', label: 'Privacidad' },
-  { href: '/terminos', label: 'Términos' },
-  { href: '/ayuda', label: 'Ayuda' },
-  { href: '/borrar-cuenta', label: 'Borrar cuenta' },
+const blocks = [
+  { letter: 'V', bg: 'bg-module-vocales', h: 'h-[100%]' },
+  { letter: 'o', bg: 'bg-module-abecedario', h: 'h-[72%]' },
+  { letter: 'l', bg: 'bg-module-numeros', h: 'h-[88%]' },
+  { letter: 'c', bg: 'bg-yellow', h: 'h-[64%]' },
+  { letter: 'a', bg: 'bg-module-silabas', h: 'h-[80%]' },
+  { letter: 'n', bg: 'bg-module-sumas', h: 'h-[70%]' },
+  { letter: 'c', bg: 'bg-module-memoria', h: 'h-[92%]' },
+  { letter: 'i', bg: 'bg-orange', h: 'h-[76%]' },
+  { letter: 't', bg: 'bg-module-abecedario', h: 'h-[86%]' },
+  { letter: 'o', bg: 'bg-module-vocales', h: 'h-[68%]' },
 ];
+const columns = [
+  {
+    title: 'La app',
+    links: [
+      { href: '/#como', label: 'Cómo se juega' },
+      { href: '/#palabras', label: 'Nicaragua' },
+      { href: '/pantallas', label: 'Pantallas' },
+    ],
+  },
+  {
+    title: 'Ayuda',
+    links: [
+      { href: '/ayuda', label: 'Preguntas y contacto' },
+      { href: '/borrar-cuenta', label: 'Borrar cuenta' },
+    ],
+  },
+  {
+    title: 'Legal',
+    links: [
+      { href: '/privacidad', label: 'Privacidad' },
+      { href: '/terminos', label: 'Términos de uso' },
+    ],
+  },
+];
+const year = new Date().getFullYear();
 ---
 
-<footer class="mt-24 border-t-[3px] border-ink bg-sand">
-  <div
-    class="mx-auto flex max-w-6xl flex-col items-center gap-6 px-5 py-10 md:flex-row md:justify-between"
-  >
-    <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm">
-      <span class="flex items-center gap-1.5 font-semibold">
-        <Logo size={34} showName={false} />
-        Volcancito
-      </span>
-      <a href={site.studio.url} class="flex items-center gap-1.5">
-        <span class="font-medium text-muted">Hecho por</span>
-        <MomotomboMark height={13} />
-        <span class="font-semibold">{site.studio.name}</span>
-      </a>
-    </div>
-    <nav
-      aria-label="Legal"
-      class="flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm font-semibold"
-    >
+<footer class="paper-dots frame pt-24 pb-10 text-ink">
+  <div class="flex h-[34svh] max-h-80 min-h-40 items-end gap-1" aria-hidden="true">
+    {
+      blocks.map((block) => (
+        <span
+          class={`flex flex-1 items-end justify-center pb-[0.12em] font-school text-[clamp(2.5rem,9vw,8.5rem)] leading-none font-bold ${block.bg} ${block.h}`}
+        >
+          {block.letter}
+        </span>
+      ))
+    }
+  </div>
+  <p class="sr-only">Volcancito</p>
+  <div class="mt-14 grid gap-10 lg:grid-cols-12">
+    <nav aria-label="Pie de página" class="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-8">
       {
-        links.map((link) => (
-          <a href={link.href} class="underline-offset-4 hover:underline">
-            {link.label}
-          </a>
+        columns.map((column) => (
+          <div>
+            <h2 class="text-note font-bold">{column.title}</h2>
+            <ul class="mt-3 flex flex-col gap-2">
+              {column.links.map((link) => (
+                <li>
+                  <a href={link.href} class="font-medium text-link">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         ))
       }
     </nav>
+    <div class="flex flex-col gap-3 lg:col-span-4">
+      <a href={`mailto:${site.supportEmail}`} class="text-lead font-bold text-link"
+        >{site.supportEmail}</a
+      >
+      <a href={site.studio.url} class="flex items-center gap-2 font-medium">
+        Hecho por <MomotomboMark height={14} />
+        <span class="font-semibold">{site.studio.name}</span>
+      </a>
+    </div>
   </div>
+  <p class="mt-12 max-w-4xl text-note">
+    Fotos:
+    {
+      credits.map((credit, i) => (
+        <>
+          <a href={credit.page} class="underline underline-offset-2">
+            {credit.title.split(' (')[0]}
+          </a>
+          , {credit.creator},{' '}
+          <a href={credit.licenseUrl} class="underline underline-offset-2">
+            {credit.license}
+          </a>
+          {i < credits.length - 1 ? '; ' : '.'}
+        </>
+      ))
+    }
+  </p>
+  <p class="mt-4 text-note">© {year} Momotombo Devs</p>
 </footer>

@@ -2,6 +2,7 @@ import legalJson from '../generated/legal.json';
 import modulesJson from '../generated/modules.json';
 import nicaraguaJson from '../generated/nicaragua.json';
 import stickersJson from '../generated/stickers.json';
+import vowelsJson from '../generated/vowels.json';
 
 export type LegalDoc = { title: string; updated: string; summary: string[]; html: string };
 export type AppModule = { id: string; name: string; color: string };
@@ -19,6 +20,10 @@ export const legal = legalJson as { terms: LegalDoc; privacy: LegalDoc };
 export const modules = modulesJson as AppModule[];
 export const nicaragua = nicaraguaJson as NicaItem[];
 export const stickers = stickersJson as Sticker[];
+export const vowels = vowelsJson as Record<
+  'a' | 'e' | 'i' | 'o' | 'u',
+  { word: string; art: string }[]
+>;
 
 export const moduleGlyph: Record<string, string> = {
   vocales: 'aeiou',

@@ -14,9 +14,7 @@ const { src, alt, caption, tilt = 0, eager = false } = Astro.props;
 ---
 
 <figure class="flex flex-col items-center gap-3" style={`transform:rotate(${tilt}deg)`}>
-  <div
-    class="w-[min(220px,40vw)] overflow-hidden rounded-[34px] bg-ink p-1.5 hard-shadow-lg ink-border"
-  >
+  <div class="w-[min(220px,40vw)] overflow-hidden rounded-[34px] bg-ink p-1.5 ink-border">
     <Image
       src={src}
       alt={alt}

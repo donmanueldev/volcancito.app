@@ -1,9 +1,8 @@
 import { expect, test } from '@playwright/test';
 
 const routes = [
-  { path: '/', heading: /Aprender a leer y contar/ },
+  { path: '/', heading: 'Leer y contar, jugando' },
   { path: '/pantallas', heading: 'Pantallas' },
-  { path: '/ilustraciones', heading: 'Ilustraciones' },
   { path: '/ayuda', heading: 'Ayuda' },
   { path: '/privacidad', heading: 'Privacidad' },
   { path: '/terminos', heading: 'Términos de uso' },
@@ -34,11 +33,25 @@ for (const route of routes) {
   });
 }
 
-test('illustrations gallery draws every figure as SVG', async ({ page }) => {
-  await page.goto('/ilustraciones');
-  const figures = page.locator('main li svg');
-  expect(await figures.count()).toBeGreaterThanOrEqual(90);
-  expect(await figures.first().locator('path, circle, ellipse, rect').count()).toBeGreaterThan(0);
+test('the vowel keys swap the word, the drawing and the field colour', async ({ page }) => {
+  await page.goto('/');
+  const field = page.locator('[data-vowel-field]');
+  const before = await field.evaluate((el) => getComputedStyle(el).backgroundColor);
+  await page.getByRole('button', { name: /^E\s*e$/ }).click();
+  await expect(page.locator('[data-vowel-word]')).toHaveText('Elefante');
+  await expect(page.locator('[data-vowel-art="e-0"]')).toBeVisible();
+  await expect(page.locator('[data-vowel-art="a-0"]')).toBeHidden();
+  expect(await field.evaluate((el) => getComputedStyle(el).backgroundColor)).not.toBe(before);
+  await page.getByRole('button', { name: /^E\s*e$/ }).click();
+  await expect(page.locator('[data-vowel-word]')).toHaveText('Estrella');
+});
+
+test('the stage slider swaps the clause', async ({ page }) => {
+  await page.goto('/');
+  const range = page.getByLabel('Mueve para ver una partida');
+  await range.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.locator('[data-stage-clause]')).toHaveText('Luego, responde la ronda');
 });
 
 test('unknown paths serve the 404 page', async ({ page }) => {
