@@ -1,0 +1,47 @@
+[
+  {
+    "id": "vocales",
+    "name": "Vocales",
+    "color": "#E05F51"
+  },
+  {
+    "id": "abecedario",
+    "name": "Abecedario",
+    "color": "#2391E0"
+  },
+  {
+    "id": "numeros",
+    "name": "Números",
+    "color": "#34A155"
+  },
+  {
+    "id": "silabas",
+    "name": "Sílabas",
+    "color": "#009C98"
+  },
+  {
+    "id": "nicaragua",
+    "name": "Nicaragua",
+    "color": "#2255B8"
+  },
+  {
+    "id": "sumas",
+    "name": "Sumas",
+    "color": "#E07B24"
+  },
+  {
+    "id": "memoria",
+    "name": "Memoria",
+    "color": "#9B77D9"
+  },
+  {
+    "id": "trazar",
+    "name": "Trazar",
+    "color": "#D6559B"
+  },
+  {
+    "id": "oraciones",
+    "name": "Oraciones",
+    "color": "#6E8F1A"
+  }
+]

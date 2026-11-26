@@ -1,0 +1,269 @@
+---
+import Art from '../components/Art.astro';
+import Mascot from '../components/Mascot.astro';
+import PhoneFrame from '../components/PhoneFrame.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { artIds, artLabel } from '../lib/art';
+import { faq, moduleBlurb, moduleGlyph, modules, nicaragua } from '../lib/content';
+import { screens } from '../lib/screens';
+
+const tilts = [1, -0.6, 0.8, 1.5, -1, -1.2, 1, 0.6, -0.8];
+const heroScreens = [screens[0], screens[1]].filter((screen) => screen !== undefined);
+const stripArt = [
+  'abeja',
+  'sol',
+  'iguana',
+  'oso',
+  'uva',
+  'jaguar',
+  'tucan',
+  'volcan',
+  'helado',
+  'pato',
+  'luna',
+  'gallo-pinto',
+];
+const steps = [
+  {
+    art: 'abeja',
+    title: 'Cada letra se vuelve palabra',
+    body: 'Letras y números con dibujos y voz. Se puede jugar sin saber leer todavía.',
+    color: 'bg-module-vocales',
+  },
+  {
+    art: 'estrella',
+    title: 'Estrellas que se vuelven stickers',
+    body: 'Cada respuesta buena da una estrella. Con las estrellas se ganan stickers para su colección.',
+    color: 'bg-yellow',
+  },
+  {
+    art: 'casa',
+    title: 'Un adulto crea la cuenta, cada niño su perfil',
+    body: 'En la Zona de papás eliges el límite diario, la voz y los sonidos.',
+    color: 'bg-module-abecedario',
+  },
+];
+const parentFeatures = [
+  { title: 'Límite diario', body: '15, 30 o 45 minutos, o sin límite, y hora de descanso.' },
+  { title: 'Progreso por niño', body: 'Qué le cuesta, cuántas estrellas lleva y cuánto juega.' },
+  { title: 'Sin anuncios', body: 'Ni anuncios ni enlaces de compra para los niños.' },
+  { title: 'Funciona sin internet', body: 'Los juegos y el progreso se guardan en el teléfono.' },
+  { title: 'Perfiles sin correo', body: 'Los niños juegan con su apodo; la cuenta es del adulto.' },
+  { title: 'Puerta para adultos', body: 'Una pregunta sencilla protege la Zona de papás.' },
+];
+const featuredNica = nicaragua.slice(0, 6);
+---
+
+<BaseLayout>
+  <section
+    class="mx-auto grid max-w-6xl items-center gap-12 px-5 pt-8 pb-16 md:grid-cols-[1.1fr_1fr] md:pt-14"
+  >
+    <div class="flex flex-col items-start gap-6">
+      <span class="pill">De 3 a 8 años · Gratis y sin anuncios</span>
+      <h1 class="text-[42px] leading-[1.05] font-bold text-balance md:text-6xl">
+        Aprender a leer y contar, <span class="font-school text-coral">jugando</span>
+      </h1>
+      <p class="max-w-lg text-lg leading-relaxed font-medium text-muted">
+        Volcancito acompaña a niñas y niños con letras, sílabas y números. Rondas cortas, dibujos
+        con voz, stickers para coleccionar y una Zona de papás para cuidar el tiempo de juego.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <a href="#descargar" class="btn btn-primary">Descargar la app</a>
+        <a href="/pantallas" class="btn btn-secondary">Ver pantallas</a>
+      </div>
+    </div>
+    <div class="relative flex min-h-[420px] items-end justify-center">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 md:left-[42%]">
+        <Mascot size={150} hat />
+      </div>
+      <div class="flex items-end gap-3 pt-36 sm:gap-4">
+        {
+          heroScreens.map((screen, i) => (
+            <PhoneFrame src={screen.src} alt={screen.alt} tilt={i === 0 ? -4 : 4} eager />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-5 py-16" aria-labelledby="modulos">
+    <SectionTitle id="modulos" kicker="Nueve juegos, un camino" title="Qué aprenden">
+      <p class="max-w-2xl font-medium text-muted">
+        Un camino de niveles va mezclando los juegos. También se puede practicar libre cada uno.
+      </p>
+    </SectionTitle>
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        modules.map((module, i) => (
+          <li
+            class="card flex min-h-40 flex-col justify-between gap-4 text-white"
+            style={`background:${module.color};transform:rotate(${tilts[i % tilts.length]}deg)`}
+          >
+            <div class="flex items-start justify-between gap-3">
+              <h3 class="text-2xl font-bold">{module.name}</h3>
+              <span class="font-school text-4xl leading-none font-bold" aria-hidden="true">
+                {moduleGlyph[module.id]}
+              </span>
+            </div>
+            <p class="font-medium">{moduleBlurb[module.id]}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-5 py-16" aria-labelledby="como">
+    <SectionTitle id="como" kicker="Cómo funciona" title="Jugar un ratito cada día" />
+    <ol class="grid gap-6 md:grid-cols-3">
+      {
+        steps.map((step) => (
+          <li class="card flex flex-col gap-4 bg-white">
+            <div
+              class={`flex h-28 items-center justify-center rounded-app-md ink-border ${step.color}`}
+            >
+              <Art id={step.art} size={88} />
+            </div>
+            <h3 class="text-xl font-bold">{step.title}</h3>
+            <p class="font-medium text-muted">{step.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="py-16" aria-labelledby="pantallas">
+    <div class="mx-auto max-w-6xl px-5">
+      <SectionTitle id="pantallas" kicker="La app por dentro" title="Pantallas">
+        <a href="/pantallas" class="font-semibold text-link underline">Ver todas las pantallas</a>
+      </SectionTitle>
+    </div>
+    <div
+      class="flex snap-x snap-mandatory gap-8 overflow-x-auto px-5 pt-2 pb-8 lg:justify-center"
+      tabindex="0"
+      aria-label="Galería de pantallas, desliza para ver más"
+    >
+      {
+        screens.slice(1, 5).map((screen, i) => (
+          <div class="shrink-0 snap-center">
+            <PhoneFrame
+              src={screen.src}
+              alt={screen.alt}
+              caption={screen.caption}
+              tilt={i % 2 ? 2 : -2}
+            />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-5 py-16" aria-labelledby="nicaragua">
+    <div class="card overflow-hidden bg-navy p-0 text-white">
+      <div class="p-6 md:p-10">
+        <SectionTitle id="nicaragua" title="¡Conocé Nicaragua!">
+          <p class="max-w-xl font-medium text-white/90">
+            Mirá, escuchá y jugá con los animales y plantas de tu país: el guardabarranco, el
+            sacuanjoche, el madroño y muchos más. Cada uno se vuelve sticker del álbum nica.
+          </p>
+        </SectionTitle>
+      </div>
+      <ul
+        class="grid grid-cols-2 gap-4 bg-white p-6 text-ink sm:grid-cols-3 md:p-10 lg:grid-cols-6"
+      >
+        {
+          featuredNica.map((item) => (
+            <li class="flex flex-col items-center gap-2 rounded-app-md bg-white p-3 hard-shadow-sm ink-border">
+              <div class="flex w-full justify-center rounded-app-sm bg-sand">
+                <Art id={item.art} size={92} label={item.name} />
+              </div>
+              <span class="text-center text-sm font-bold">{item.name}</span>
+              {item.tag && <span class="text-xs font-semibold text-muted">{item.tag}</span>}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-5 py-16" aria-labelledby="ilustraciones">
+    <SectionTitle id="ilustraciones" kicker="Dibujadas para la app" title="Ilustraciones">
+      <a href="/ilustraciones" class="font-semibold text-link underline"
+        >Ver las {artIds.length} ilustraciones</a
+      >
+    </SectionTitle>
+    <ul class="grid grid-cols-3 gap-4 sm:grid-cols-4 lg:grid-cols-6">
+      {
+        stripArt.map((id, i) => (
+          <li
+            class="flex aspect-square items-center justify-center rounded-app-md bg-white p-2 hard-shadow-sm ink-border"
+            style={`transform:rotate(${tilts[i % tilts.length]}deg)`}
+          >
+            <Art id={id} size={96} label={artLabel(id)} class="h-full w-full" />
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-5 py-16" aria-labelledby="papas">
+    <SectionTitle id="papas" kicker="Para mamá, papá o tutor" title="Zona de papás" />
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        parentFeatures.map((feature) => (
+          <li class="card bg-white">
+            <h3 class="text-lg font-bold">{feature.title}</h3>
+            <p class="mt-1 font-medium text-muted">{feature.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-5 py-16" aria-labelledby="preguntas">
+    <SectionTitle id="preguntas" title="Preguntas frecuentes" center />
+    <div class="flex flex-col gap-4">
+      {
+        faq.map((item, i) => (
+          <details class="card group bg-white p-0" open={i === 0}>
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 p-5 text-lg font-bold">
+              {item.q}
+              <span class="text-2xl transition-transform group-open:rotate-45" aria-hidden="true">
+                +
+              </span>
+            </summary>
+            <p class="px-5 pb-5 font-medium text-muted">{item.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <section
+    id="descargar"
+    class="mx-auto max-w-4xl scroll-mt-6 px-5 py-16"
+    aria-labelledby="descargar-titulo"
+  >
+    <div class="card flex flex-col items-center gap-6 bg-yellow px-6 py-10 text-center">
+      <Mascot size={120} />
+      <h2 id="descargar-titulo" class="text-3xl font-bold md:text-4xl">
+        Muy pronto en tu teléfono
+      </h2>
+      <p class="max-w-lg font-medium">
+        Volcancito estará en App Store y Google Play. Es gratis y sin anuncios.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <span
+          class="inline-flex h-13 items-center rounded-full border-dashed bg-white/60 px-6 font-bold ink-border"
+        >
+          App Store · Próximamente
+        </span>
+        <span
+          class="inline-flex h-13 items-center rounded-full border-dashed bg-white/60 px-6 font-bold ink-border"
+        >
+          Google Play · Próximamente
+        </span>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

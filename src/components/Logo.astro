@@ -1,0 +1,48 @@
+---
+import Volcano from './Volcano.astro';
+
+interface Props {
+  size?: number;
+  showName?: boolean;
+  class?: string;
+}
+
+const { size = 220, showName = true, class: className } = Astro.props;
+const scale = size / 220;
+const tiles = [
+  { x: 52, y: 10, rotate: -12, fill: 'var(--color-yellow)', label: 'a', ink: true },
+  { x: 92, y: 0, rotate: 3, fill: 'var(--color-blue)', label: '1', ink: false },
+  { x: 132, y: 12, rotate: 14, fill: 'var(--color-coral)', label: 'b', ink: false },
+];
+---
+
+<div class:list={['flex flex-col items-center', className]} role="img" aria-label="Volcancito">
+  <div style={`width:${220 * scale}px;height:${220 * scale}px`}>
+    <div class="relative h-[220px] w-[220px] origin-top-left" style={`transform:scale(${scale})`}>
+      <svg class="absolute top-[68px] left-0" width="220" height="150" viewBox="0 20 106 78">
+        <Volcano />
+      </svg>
+      {
+        tiles.map((tile) => (
+          <span
+            class="absolute flex h-[50px] w-[50px] items-center justify-center rounded-xl font-school text-[32px] leading-none font-bold hard-shadow-sm ink-border"
+            style={`left:${tile.x}px;top:${tile.y}px;background:${tile.fill};transform:rotate(${tile.rotate}deg);color:${tile.ink ? 'var(--color-ink)' : '#fff'}`}
+            aria-hidden="true"
+          >
+            <span class="-mt-1">{tile.label}</span>
+          </span>
+        ))
+      }
+    </div>
+  </div>
+  {
+    showName && (
+      <span
+        class="mt-1 font-school leading-none font-bold whitespace-nowrap text-ink"
+        style={`font-size:${64 * scale}px`}
+      >
+        Volcancito
+      </span>
+    )
+  }
+</div>

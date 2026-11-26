@@ -1,0 +1,36 @@
+---
+interface Props {
+  height?: number;
+}
+
+const { height = 18 } = Astro.props;
+const box = { x: 166, y: 148, width: 2460, height: 1193 };
+const gradientId = 'momotombo-mark-gradient';
+---
+
+<svg
+  viewBox={`${box.x} ${box.y} ${box.width} ${box.height}`}
+  height={height}
+  width={(box.width * height) / box.height}
+  aria-hidden="true"
+>
+  <defs>
+    <linearGradient
+      id={gradientId}
+      gradientUnits="userSpaceOnUse"
+      x1={box.x}
+      y1={box.y}
+      x2={box.x + box.width}
+      y2={box.y + box.height}
+    >
+      <stop offset="0" stop-color="#f07d1a"></stop>
+      <stop offset="1" stop-color="#e94e0e"></stop>
+    </linearGradient>
+  </defs>
+  <path
+    fill={`url(#${gradientId})`}
+    d="M1305.661,520.183l692.292,820.3l627.342,-0l-1005.899,-1192.005l-313.735,371.704Z"></path>
+  <path
+    fill={`url(#${gradientId})`}
+    d="M166.356,1340.484l1630.37,-0l-815.179,-974.405l-815.191,974.405Z"></path>
+</svg>

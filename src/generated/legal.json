@@ -1,0 +1,19 @@
+{
+  "terms": {
+    "title": "Términos de uso",
+    "updated": "18 de octubre de 2026",
+    "summary": [],
+    "html": "<p>Estas son las reglas para usar Volcancito. Al crear la cuenta, el adulto las acepta.</p><br><h3>Quiénes somos</h3><p>Volcancito es una app de Momotombo para que los niños aprendan a leer y contar jugando.</p><br><h3>La cuenta</h3><ul><li>La crea un adulto mayor de edad, que cuida su contraseña.</li><li>Los niños juegan con su propio perfil, sin correo ni contraseña.</li><li>El adulto decide el tiempo de juego y los avisos en la Zona de papás.</li></ul><br><h3>Gratis</h3><ul><li>Volcancito es gratis. No tiene compras dentro de la app ni anuncios.</li><li>Si algún día agregamos contenido de pago, cambiaremos estos términos y te avisaremos antes de cobrar nada.</li></ul><br><h3>Uso permitido</h3><p>La app es para uso personal y familiar. No está permitido copiar, vender ni publicar sus juegos, dibujos, sonidos o textos.</p><br><h3>El contenido</h3><p>Los dibujos, sonidos y textos son de Momotombo o se usan con permiso. Las letras Lexend y Andika se usan con su licencia libre (OFL).</p><br><h3>Funcionamiento</h3><p>Hacemos lo posible para que todo funcione bien, pero puede haber errores o pausas. Sin internet se puede jugar con lo que ya está en el teléfono.</p><br><h3>Terminar</h3><p>Puedes borrar tu cuenta cuando quieras desde la Zona de papás. Podemos cerrar una cuenta que no cumpla estas reglas, y te avisaremos.</p><br><h3>Cambios</h3><p>Si cambiamos estos términos, te avisamos por correo antes.</p>"
+  },
+  "privacy": {
+    "title": "Privacidad",
+    "updated": "18 de octubre de 2026",
+    "summary": [
+      "No mostramos anuncios.",
+      "No vendemos ni compartimos datos para publicidad.",
+      "Los niños no ponen correo, foto ni ubicación.",
+      "Puedes ver y borrar todo cuando quieras."
+    ],
+    "html": "<p>Volcancito es una app para niños. Por eso pedimos lo mínimo y lo cuidamos mucho. Aquí te explicamos, sin letra chica, qué guardamos y para qué.</p><br><h3>Qué guardamos</h3><p><b>Del adulto:</b> el correo y la contraseña (guardada cifrada).</p><p><b>De cada niño:</b> el apodo, la edad y el color que eligieron, y su progreso: estrellas, niveles, stickers, aciertos y tiempo de uso.</p><p><b>Del teléfono:</b> datos técnicos cuando algo falla (modelo y versión del sistema), sin nada que identifique al niño.</p><br><h3>Para qué lo usamos</h3><ul><li>Guardar el progreso para que el niño siga donde se quedó.</li><li>Mostrarte en la Zona de papás qué le cuesta y cuánto juega.</li><li>Enviarte solo los avisos que tú activas.</li><li>Arreglar errores y mejorar los juegos.</li></ul><br><h3>Lo que nunca hacemos</h3><ul><li>Mostrar anuncios o crear perfiles para publicidad.</li><li>Dejar que el niño hable o comparta con otras personas.</li><li>Usar la cámara, el micrófono o la ubicación.</li><li>Vender datos a nadie.</li></ul><br><h3>Con quién se comparten</h3><p>Solo con el servicio que necesitamos para que la app funcione: el servidor en la nube donde se guarda el progreso. Ese servicio solo puede usar los datos para guardarlos.</p><br><h3>Cuánto tiempo los guardamos</h3><p>Mientras tengas la cuenta. Si la borras, borramos todo en un plazo de 30 días.</p><br><h3>Lo que puedes hacer</h3><ul><li>Ver y corregir los datos de cada perfil en la Zona de papás.</li><li>Pedirnos una copia de los datos.</li><li>Borrar un perfil o toda la cuenta desde la Zona de papás, o escribiéndonos.</li></ul><br><h3>Niños</h3><p>La cuenta la crea siempre un adulto: padre, madre o tutor. Si crees que un niño creó una cuenta sin permiso, escríbenos y la borramos.</p><br><h3>Cambios</h3><p>Si cambiamos algo importante, te avisamos por correo antes de que cambie.</p>"
+  }
+}

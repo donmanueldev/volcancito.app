@@ -1,0 +1,61 @@
+---
+import { ART, outline, paint } from '../lib/art';
+
+interface Props {
+  id: string;
+  size?: number;
+  label?: string;
+  class?: string;
+}
+
+const { id, size = 96, label, class: className } = Astro.props;
+const shapes = ART[id] ?? [];
+---
+
+<svg
+  viewBox="0 0 100 100"
+  width={size}
+  height={size}
+  class={className}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  stroke-linejoin="round"
+  stroke-linecap="round"
+>
+  {
+    shapes.map((shape) => {
+      const fill = paint(shape.fill);
+      const line = outline(shape.stroke);
+      switch (shape.kind) {
+        case 'circle':
+          return <circle cx={shape.cx} cy={shape.cy} r={shape.r} fill={fill} {...line} />;
+        case 'oval':
+          return (
+            <ellipse
+              cx={shape.cx}
+              cy={shape.cy}
+              rx={shape.rx}
+              ry={shape.ry}
+              fill={fill}
+              {...line}
+            />
+          );
+        case 'rect':
+          return (
+            <rect
+              x={shape.x}
+              y={shape.y}
+              width={shape.w}
+              height={shape.h}
+              rx={shape.r}
+              fill={fill}
+              {...line}
+            />
+          );
+        case 'path':
+          return <path d={shape.d} fill={fill} {...line} />;
+      }
+    })
+  }
+</svg>

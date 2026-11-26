@@ -1,0 +1,23 @@
+---
+import Volcano from './Volcano.astro';
+
+interface Props {
+  size?: number;
+  sleeping?: boolean;
+  hat?: boolean;
+  class?: string;
+}
+
+const { size = 160, sleeping = false, hat = false, class: className } = Astro.props;
+---
+
+<svg
+  viewBox="0 6 106 94"
+  width={size}
+  height={(size * 94) / 106}
+  class={className}
+  role="img"
+  aria-label="Volcancito, la mascota"
+>
+  <Volcano face sleeping={sleeping} hat={hat} />
+</svg>

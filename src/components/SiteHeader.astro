@@ -1,0 +1,46 @@
+---
+import Logo from './Logo.astro';
+import { nav } from '../lib/site';
+
+const current = Astro.url.pathname.replace(/\/$/, '');
+---
+
+<header class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4">
+  <a href="/" class="flex items-center gap-2 rounded-full" aria-label="Volcancito, inicio">
+    <Logo size={44} showName={false} />
+    <span class="font-school text-2xl font-bold">Volcancito</span>
+  </a>
+  <nav aria-label="Principal" class="hidden items-center gap-1 md:flex">
+    {
+      nav.map((item) => (
+        <a
+          href={item.href}
+          class:list={[
+            'rounded-full px-4 py-2 font-semibold hover:bg-sand',
+            current === item.href && 'bg-white ring-[3px] ring-ink',
+          ]}
+          aria-current={current === item.href ? 'page' : undefined}
+        >
+          {item.label}
+        </a>
+      ))
+    }
+  </nav>
+  <a href="/#descargar" class="btn btn-primary h-11 px-5 text-[15px]">Descargar</a>
+</header>
+<nav
+  aria-label="Secciones"
+  class="mx-auto -mt-1 flex max-w-6xl gap-2 overflow-x-auto px-5 pb-2 md:hidden"
+>
+  {
+    nav.map((item) => (
+      <a
+        href={item.href}
+        class="pill shrink-0"
+        aria-current={current === item.href ? 'page' : undefined}
+      >
+        {item.label}
+      </a>
+    ))
+  }
+</nav>

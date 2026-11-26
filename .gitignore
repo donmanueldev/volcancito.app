@@ -1,0 +1,15 @@
+dist/
+.astro/
+node_modules/
+.pnpm-store/
+.wrangler/
+.env
+.env.*
+!.env.example
+.dev.vars
+.DS_Store
+coverage/
+playwright-report/
+test-results/
+.claude/settings.local.json
+.claude/launch.json

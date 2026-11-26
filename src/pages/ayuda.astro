@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { faq } from '../lib/content';
+import { site } from '../lib/site';
+---
+
+<BaseLayout title="Ayuda" description="Preguntas frecuentes sobre Volcancito y cómo escribirnos.">
+  <section class="mx-auto max-w-2xl px-5 pt-6">
+    <h1 class="text-4xl font-bold">Ayuda</h1>
+    <p class="mt-3 text-lg font-medium text-muted">
+      Las respuestas a lo que más nos preguntan. Si no encuentras la tuya, escríbenos.
+    </p>
+    <div class="mt-8 flex flex-col gap-4">
+      {
+        faq.map((item) => (
+          <section class="card bg-white">
+            <h2 class="text-lg font-bold">{item.q}</h2>
+            <p class="mt-2 font-medium text-muted">{item.a}</p>
+          </section>
+        ))
+      }
+    </div>
+    <div class="card mt-10 flex flex-col items-start gap-4 bg-yellow">
+      <h2 class="text-2xl font-bold">¿Necesitas más ayuda?</h2>
+      <p class="font-medium">Respondemos en español, normalmente en uno o dos días hábiles.</p>
+      <a href={`mailto:${site.supportEmail}`} class="btn btn-secondary">{site.supportEmail}</a>
+    </div>
+  </section>
+</BaseLayout>

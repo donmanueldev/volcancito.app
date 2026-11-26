@@ -1,0 +1,226 @@
+[
+  {
+    "id": "abeja",
+    "label": "a",
+    "name": "Abeja",
+    "module": "vocales",
+    "starsNeeded": 1
+  },
+  {
+    "id": "elefante",
+    "label": "e",
+    "name": "Elefante",
+    "module": "vocales",
+    "starsNeeded": 5
+  },
+  {
+    "id": "iguana",
+    "label": "i",
+    "name": "Iguana",
+    "module": "vocales",
+    "starsNeeded": 10
+  },
+  {
+    "id": "oso",
+    "label": "o",
+    "name": "Oso",
+    "module": "vocales",
+    "starsNeeded": 15
+  },
+  {
+    "id": "barco",
+    "label": "b",
+    "name": "Barco",
+    "module": "abecedario",
+    "starsNeeded": 1
+  },
+  {
+    "id": "casa",
+    "label": "c",
+    "name": "Casa",
+    "module": "abecedario",
+    "starsNeeded": 5
+  },
+  {
+    "id": "gato",
+    "label": "g",
+    "name": "Gato",
+    "module": "abecedario",
+    "starsNeeded": 10
+  },
+  {
+    "id": "volcan",
+    "label": "v",
+    "name": "Volcán",
+    "module": "abecedario",
+    "starsNeeded": 15
+  },
+  {
+    "id": "sol",
+    "label": "1",
+    "name": "Un sol",
+    "module": "numeros",
+    "starsNeeded": 1
+  },
+  {
+    "id": "patos",
+    "label": "2",
+    "name": "Dos patos",
+    "module": "numeros",
+    "starsNeeded": 5
+  },
+  {
+    "id": "mangos",
+    "label": "3",
+    "name": "Tres mangos",
+    "module": "numeros",
+    "starsNeeded": 10
+  },
+  {
+    "id": "flores",
+    "label": "10",
+    "name": "Diez flores",
+    "module": "numeros",
+    "starsNeeded": 15
+  },
+  {
+    "id": "mano",
+    "label": "ma",
+    "name": "Mano",
+    "module": "silabas",
+    "starsNeeded": 1
+  },
+  {
+    "id": "pato",
+    "label": "pa",
+    "name": "Pato",
+    "module": "silabas",
+    "starsNeeded": 5
+  },
+  {
+    "id": "sapo",
+    "label": "sa",
+    "name": "Sapo",
+    "module": "silabas",
+    "starsNeeded": 10
+  },
+  {
+    "id": "luna",
+    "label": "lu",
+    "name": "Luna",
+    "module": "silabas",
+    "starsNeeded": 15
+  },
+  {
+    "id": "suma-primera",
+    "label": "+",
+    "name": "Primera suma",
+    "module": "sumas",
+    "starsNeeded": 1
+  },
+  {
+    "id": "suma-igual",
+    "label": "=",
+    "name": "Igualito",
+    "module": "sumas",
+    "starsNeeded": 5
+  },
+  {
+    "id": "suma-cinco",
+    "label": "5",
+    "name": "Cinco deditos",
+    "module": "sumas",
+    "starsNeeded": 10
+  },
+  {
+    "id": "suma-diez",
+    "label": "10",
+    "name": "Diez deditos",
+    "module": "sumas",
+    "starsNeeded": 15
+  },
+  {
+    "id": "memoria-par",
+    "label": "aa",
+    "name": "Primer par",
+    "module": "memoria",
+    "starsNeeded": 1
+  },
+  {
+    "id": "memoria-unos",
+    "label": "11",
+    "name": "Buena memoria",
+    "module": "memoria",
+    "starsNeeded": 5
+  },
+  {
+    "id": "memoria-letras",
+    "label": "bb",
+    "name": "Memoria de lapa",
+    "module": "memoria",
+    "starsNeeded": 10
+  },
+  {
+    "id": "memoria-maestra",
+    "label": "22",
+    "name": "Memoria de elefante",
+    "module": "memoria",
+    "starsNeeded": 15
+  },
+  {
+    "id": "trazo-a",
+    "label": "a",
+    "name": "Mi primer trazo",
+    "module": "trazar",
+    "starsNeeded": 1
+  },
+  {
+    "id": "trazo-e",
+    "label": "e",
+    "name": "Mano firme",
+    "module": "trazar",
+    "starsNeeded": 5
+  },
+  {
+    "id": "trazo-tres",
+    "label": "3",
+    "name": "Lápiz mágico",
+    "module": "trazar",
+    "starsNeeded": 10
+  },
+  {
+    "id": "trazo-nueve",
+    "label": "9",
+    "name": "Gran artista",
+    "module": "trazar",
+    "starsNeeded": 15
+  },
+  {
+    "id": "oracion-el",
+    "label": "el",
+    "name": "Primera oración",
+    "module": "oraciones",
+    "starsNeeded": 1
+  },
+  {
+    "id": "oracion-la",
+    "label": "la",
+    "name": "Pequeño lector",
+    "module": "oraciones",
+    "starsNeeded": 5
+  },
+  {
+    "id": "oracion-mi",
+    "label": "mi",
+    "name": "Cuentacuentos",
+    "module": "oraciones",
+    "starsNeeded": 10
+  },
+  {
+    "id": "oracion-yo",
+    "label": "yo",
+    "name": "Gran lector",
+    "module": "oraciones",
+    "starsNeeded": 15
+  }
+]

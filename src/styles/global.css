@@ -1,0 +1,85 @@
+@import 'tailwindcss';
+@import '../generated/tokens.css';
+
+@theme inline {
+  --font-sans: var(--font-lexend), system-ui, sans-serif;
+  --font-school: var(--font-andika), system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-paper);
+    background-image: radial-gradient(var(--color-paper-dot) 1.3px, transparent 1.6px);
+    background-size: 18px 18px;
+    background-position: 9px 9px;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-link);
+    outline-offset: 3px;
+  }
+}
+
+@utility hard-shadow {
+  box-shadow: 4px 5px 0 var(--color-ink);
+}
+
+@utility hard-shadow-lg {
+  box-shadow: 5px 7px 0 var(--color-ink);
+}
+
+@utility hard-shadow-sm {
+  box-shadow: 3px 4px 0 var(--color-ink);
+}
+
+@utility ink-border {
+  border: var(--border-app) solid var(--color-ink);
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex h-13 items-center justify-center gap-2 rounded-full px-6 text-[17px] font-bold whitespace-nowrap text-ink hard-shadow transition-[transform,box-shadow] duration-100 ink-border;
+  }
+  .btn:active {
+    transform: translate(2px, 3px);
+    box-shadow: 1px 2px 0 var(--color-ink);
+  }
+  .btn-primary {
+    @apply bg-yellow;
+  }
+  .btn-secondary {
+    @apply bg-white;
+  }
+  .card {
+    @apply rounded-app-lg p-5 hard-shadow-lg ink-border;
+  }
+  .pill {
+    @apply inline-flex h-9 items-center gap-2 rounded-full bg-white px-3.5 text-sm font-bold ink-border;
+  }
+  .prose-legal h3 {
+    @apply mt-6 mb-2 text-[19px] font-bold;
+  }
+  .prose-legal p,
+  .prose-legal li {
+    @apply text-base leading-[1.45] text-ink;
+  }
+  .prose-legal ul {
+    @apply list-disc space-y-1 pl-6;
+  }
+  .prose-legal br {
+    display: none;
+  }
+  .prose-legal a {
+    @apply font-semibold text-link underline;
+  }
+}

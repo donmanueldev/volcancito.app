@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../lib/site';
+
+const steps = [
+  'Abre Volcancito y entra a la Zona de papás.',
+  'Responde la pregunta para adultos.',
+  'Baja a la sección Cuenta y toca «Borrar cuenta».',
+  'Confirma con «Borrar mi cuenta». Necesitas internet para este paso.',
+];
+const subject = encodeURIComponent('Borrar mi cuenta de Volcancito');
+---
+
+<BaseLayout
+  title="Borrar cuenta"
+  description="Cómo borrar tu cuenta de Volcancito y todos sus datos, desde la app o escribiéndonos."
+>
+  <section class="mx-auto max-w-2xl px-5 pt-6">
+    <h1 class="text-4xl font-bold">Borrar cuenta</h1>
+    <p class="mt-3 text-lg font-medium text-muted">
+      Puedes borrar tu cuenta de Volcancito y todos los perfiles de niños cuando quieras.
+    </p>
+    <section class="card mt-8 bg-white">
+      <h2 class="text-xl font-bold">Desde la app</h2>
+      <ol class="mt-4 flex flex-col gap-3">
+        {
+          steps.map((step, i) => (
+            <li class="flex items-start gap-3 font-medium">
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-yellow text-sm font-bold ink-border">
+                {i + 1}
+              </span>
+              <span class="pt-1">{step}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+    <section class="card mt-6 bg-white">
+      <h2 class="text-xl font-bold">Escribiéndonos</h2>
+      <p class="mt-2 font-medium text-muted">
+        Si ya no tienes la app, escríbenos desde el correo de la cuenta y la borramos por ti.
+      </p>
+      <a href={`mailto:${site.supportEmail}?subject=${subject}`} class="btn btn-secondary mt-4"
+        >{site.supportEmail}</a
+      >
+    </section>
+    <section class="card mt-6 bg-sand">
+      <h2 class="text-xl font-bold">Qué se borra</h2>
+      <p class="mt-2 font-medium">
+        El correo y la contraseña del adulto, y de cada niño su apodo, edad, color y progreso
+        (estrellas, niveles, stickers, aciertos y tiempo de uso). Lo borramos todo en un plazo de 30
+        días. Para borrar solo a un niño, entra a su perfil en la Zona de papás y toca «Borrar
+        perfil de…».
+      </p>
+    </section>
+  </section>
+</BaseLayout>
