@@ -13,8 +13,17 @@ function initVowels() {
   const listen = field.querySelector<HTMLButtonElement>('[data-vowel-listen]');
   const position: Record<string, number> = {};
   let current = 'a';
-  let phrase = 'A… A, de abeja.';
-  const say = () => speak(phrase);
+  let phrase = 'A de abeja.';
+  let clip = '/audio/vowels/a-0.mp3';
+  const audio = new Audio();
+  audio.preload = 'none';
+  const say = () => {
+    window.speechSynthesis?.cancel();
+    audio.pause();
+    audio.src = clip;
+    audio.currentTime = 0;
+    audio.play().catch(() => speak(phrase));
+  };
   listen?.addEventListener('click', say);
 
   for (const key of keys) {
@@ -33,7 +42,8 @@ function initVowels() {
       if (glyph) glyph.textContent = `${letter.toUpperCase()}${letter}`;
       if (word) word.textContent = capitalize(chosen);
       if (heading) heading.textContent = letter;
-      phrase = `${letter.toUpperCase()}… ${letter.toUpperCase()}, de ${chosen}.`;
+      phrase = `${letter.toUpperCase()} de ${chosen}.`;
+      clip = `/audio/vowels/${letter}-${index}.mp3`;
       say();
     });
   }

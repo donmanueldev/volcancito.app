@@ -30,6 +30,16 @@ Screenshots in `src/assets/screens/` come from a real Android device: open the s
 and run `scripts/capture-screens.sh <name>` (needs `adb` and ImageMagick). Use a demo profile, not
 a real child's name.
 
+## Vowel audio
+
+The vowel keyboard plays recorded clips from `public/audio/vowels/` (`a-0.mp3` = "A de abeja.")
+and falls back to the browser's speech voice when a clip is missing. The clips are generated with
+ElevenLabs (`eleven_multilingual_v2`):
+
+1. Put `ELEVENLABS_API_KEY=...` in `.env.elevenlabs` (ignored by git).
+2. `pnpm audio --list-voices` lists the Spanish voices on the account.
+3. `pnpm audio <voice-id>` writes the 15 clips and `voice.json` with the voice used.
+
 ## Deploy
 
 `wrangler.jsonc` serves `dist/` with the custom domain `volcancito.momotombo.dev`. Deploying and

@@ -11,7 +11,12 @@ async function scrollThrough(page: Page) {
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
     const spoken: string[] = [];
-    Object.assign(window, { __spoken: spoken });
+    const played: string[] = [];
+    Object.assign(window, { __spoken: spoken, __played: played });
+    HTMLMediaElement.prototype.play = function play(this: HTMLMediaElement) {
+      played.push(this.src);
+      return Promise.resolve();
+    };
     if ('speechSynthesis' in window) {
       window.speechSynthesis.speak = (utterance: SpeechSynthesisUtterance) => {
         spoken.push(utterance.text);
@@ -56,9 +61,16 @@ test('every vowel key shows its word, drawing and colour, and speaks', async ({ 
   await page.getByRole('button', { name: /^Aa$/ }).click();
   await expect(word).not.toHaveText('Abeja');
   await page.getByRole('button', { name: 'Escuchar la palabra' }).click();
-  const spoken = await page.evaluate(() => (window as unknown as { __spoken: string[] }).__spoken);
-  expect(spoken.length).toBeGreaterThanOrEqual(7);
-  expect(spoken.at(-1)).toMatch(/^A… A, de /);
+  const played = await page.evaluate(() => (window as unknown as { __played: string[] }).__played);
+  expect(played).toHaveLength(7);
+  expect(played.slice(0, 5).map((src) => new URL(src).pathname)).toEqual([
+    '/audio/vowels/e-0.mp3',
+    '/audio/vowels/i-0.mp3',
+    '/audio/vowels/o-0.mp3',
+    '/audio/vowels/u-0.mp3',
+    '/audio/vowels/a-0.mp3',
+  ]);
+  expect(new URL(played.at(-1) ?? '').pathname).toBe('/audio/vowels/a-1.mp3');
 });
 
 test('the game steps switch the phone screen', async ({ page }) => {
@@ -117,10 +129,21 @@ test('every section appears and every picture loads', async ({ page }) => {
   await expect(page.locator('#preguntas h3')).toHaveCount(6);
 });
 
+test('every vowel clip is served as audio', async ({ request }) => {
+  for (const letter of ['a', 'e', 'i', 'o', 'u']) {
+    for (const i of [0, 1, 2]) {
+      const response = await request.get(`/audio/vowels/${letter}-${i}.mp3`);
+      expect(response.status()).toBe(200);
+      expect((await response.body()).byteLength).toBeGreaterThan(10_000);
+    }
+  }
+});
+
 test('the footer links work and credit the photos', async ({ page, request }) => {
   const footer = page.locator('footer');
   await expect(footer.getByRole('link', { name: 'Borrar cuenta' })).toHaveCount(0);
   await expect(footer.getByText('CC BY-SA', { exact: false }).first()).toBeAttached();
+  await expect(footer.getByText('ElevenLabs', { exact: false })).toBeAttached();
   const hrefs = await footer
     .locator('a[href^="/"]')
     .evaluateAll((links) => links.map((link) => link.getAttribute('href') ?? ''));
