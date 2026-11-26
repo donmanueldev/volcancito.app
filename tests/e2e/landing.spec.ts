@@ -139,10 +139,10 @@ test('every vowel clip is served as audio', async ({ request }) => {
   }
 });
 
-test('the footer links work and credit the photos', async ({ page, request }) => {
+test('the footer links work and credit the voice', async ({ page, request }) => {
   const footer = page.locator('footer');
   await expect(footer.getByRole('link', { name: 'Borrar cuenta' })).toHaveCount(0);
-  await expect(footer.getByText('CC BY-SA', { exact: false }).first()).toBeAttached();
+  await expect(footer.getByText('CC BY-SA', { exact: false })).toHaveCount(0);
   await expect(footer.getByText('ElevenLabs', { exact: false })).toBeAttached();
   const hrefs = await footer
     .locator('a[href^="/"]')
